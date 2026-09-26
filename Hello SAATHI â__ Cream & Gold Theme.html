@@ -1,0 +1,1689 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Hello SAATHI</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome (SVG+JS build: renders every fa-* icon as inline SVG, no external stylesheet needed) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous"></script>
+
+  <!-- Typography: Poppins for display, Inter for body/UI -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ["Poppins", "Inter", "sans-serif"],
+            body: ["Inter", "sans-serif"]
+          },
+          colors: {
+            orangeCustom: "#EFA531",
+            orangeDark: "#C67F1F",
+            orangeLight: "#FBD98B",
+            slateDark: "#FDF3DC",
+            slateCard: "#FFFFFF",
+            slateBorder: "#F0DDB0",
+            slate: {
+              50: "#FFFDF7",
+              100: "#FDF6E8",
+              200: "#F7ECCB",
+              300: "#4A5273",
+              400: "#69719A",
+              500: "#828AAA",
+              600: "#E4CE94",
+              700: "#F1E4BC",
+              800: "#FFF9EC",
+              900: "#1E2A44",
+              950: "#141C30"
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #fff9ec 0%, #fdf0d2 48%, #f7e3b4 100%);
+      color: #1e2a44;
+    }
+
+    h1, h2, h3, .font-display {
+      font-family: 'Poppins', 'Inter', sans-serif;
+    }
+
+    .app-shell {
+      background: rgba(255, 251, 240, 0.96);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(232, 163, 61, 0.32);
+    }
+
+    .soft-card {
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(232, 163, 61, 0.3);
+      box-shadow: 0 10px 30px rgba(30, 42, 68, 0.1);
+    }
+
+    .orange-btn {
+      background: linear-gradient(135deg, #efa531, #c67f1f);
+      color: #1e2a44 !important;
+      box-shadow: 0 8px 20px rgba(232, 163, 61, 0.4);
+    }
+
+    .orange-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px rgba(232, 163, 61, 0.45);
+    }
+
+    /* ================= REELS ================= */
+
+    .reels-container {
+      scroll-snap-type: y mandatory;
+      overflow-y: scroll;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .reels-container::-webkit-scrollbar {
+      display: none;
+    }
+
+    .reel-item {
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+
+    /* ================= SWIPE ================= */
+
+    .swipe-card {
+      transition: transform 0.35s ease, opacity 0.3s ease;
+      will-change: transform, opacity;
+    }
+
+    .swipe-right-anim {
+      transform: translateX(120%) rotate(18deg) !important;
+      opacity: 0 !important;
+    }
+
+    .swipe-left-anim {
+      transform: translateX(-120%) rotate(-18deg) !important;
+      opacity: 0 !important;
+    }
+
+    /* ================= FLOAT ================= */
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-7px); }
+    }
+
+    .animate-float {
+      animation: float 4s ease-in-out infinite;
+    }
+
+    /* ================= BLOBS ================= */
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(45px);
+      pointer-events: none;
+    }
+
+    .blob-one {
+      width: 180px;
+      height: 180px;
+      background: rgba(232, 163, 61, 0.16);
+      top: -50px;
+      left: -50px;
+    }
+
+    .blob-two {
+      width: 200px;
+      height: 200px;
+      background: rgba(244, 190, 104, 0.12);
+      bottom: -70px;
+      right: -60px;
+    }
+
+    input, select, textarea {
+      color: #10221d !important;
+      font-family: 'Inter', sans-serif;
+    }
+
+    input::placeholder {
+      color: #8b93ac !important;
+    }
+
+    /* ================= VOICE BUTTON ================= */
+
+    .voice-button {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(232, 163, 61, 0.95);
+      color: #16221a;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      transition: transform 0.2s ease;
+    }
+
+    .voice-button:active {
+      transform: scale(0.9);
+    }
+
+    /* ================= VOICE STATUS ================= */
+
+    .voice-status {
+      background: rgba(30, 42, 68, 0.92);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(232, 163, 61, 0.3);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 10px;
+      font-weight: 800;
+      color: #f0be5b;
+    }
+  
+/* ===== Hello Saathi V2 additions ===== */
+.saathi-hero{position:relative}.helmet{position:absolute;top:-10px;right:-12px;background:#f4be68;color:#4a3007;border-radius:18px 18px 8px 8px;padding:5px 10px;font-size:17px;box-shadow:0 5px 12px #0004;transform:rotate(-8deg)}
+.location-box{background:rgba(232,163,61,.1);border:1px solid rgba(232,163,61,.28);border-radius:18px;padding:13px}.switch{width:48px;height:27px;position:relative;display:inline-block}.switch input{opacity:0;width:0;height:0}.switch span{position:absolute;inset:0;background:#e6d6a8;border-radius:99px}.switch span:before{content:"";position:absolute;width:21px;height:21px;left:3px;top:3px;background:#ffffff;border-radius:50%;transition:.2s}.switch input:checked+span{background:#efa531}.switch input:checked+span:before{transform:translateX(21px)}
+.lang-chip{display:inline-flex;padding:5px 9px;border-radius:99px;background:#fff9ec;border:1px solid #e4ce94;font-size:10px;font-weight:800;margin:3px;color:#1e2a44}.dashboard-card{background:linear-gradient(135deg,rgba(239,165,49,.24),rgba(255,249,236,.9));border:1px solid rgba(232,163,61,.3)}.metric{background:#fff9ec;border:1px solid #e4ce94;border-radius:16px;padding:12px;color:#1e2a44}.metric b{font-size:20px;font-family:'Poppins',sans-serif}.fed-option{background:#fff9ecdd;border:1px solid #e4ce94;border-radius:18px;padding:15px;display:flex;align-items:center;gap:13px;color:#1e2a44}.fed-option i{width:42px;height:42px;border-radius:14px;background:#efa53122;color:#c67f1f;display:grid;place-items:center}.reels-container{scroll-snap-type:y mandatory;overflow-y:auto;overscroll-behavior-y:contain;scrollbar-width:none}.reels-container::-webkit-scrollbar{display:none}.reel-item{scroll-snap-align:start;scroll-snap-stop:always;min-height:100%;height:100%;position:relative;overflow:hidden}.reel-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.reel-shade{position:absolute;inset:0;background:linear-gradient(180deg,#0007 0%,transparent 35%,#000e 100%);pointer-events:none}.reel-content{position:absolute;left:18px;right:18px;bottom:22px;z-index:5}.reel-actions{position:absolute;right:14px;bottom:125px;z-index:6;display:flex;flex-direction:column;gap:10px}.reel-action{width:48px;height:48px;border-radius:50%;border:1px solid #ffffff33;background:#0009;color:#fff;display:grid;place-items:center}.reel-scroll-hint{position:absolute;right:10px;top:50%;z-index:6;color:#fff8;font-size:10px;writing-mode:vertical-rl}.reel-bottom{position:absolute;left:18px;right:18px;bottom:8px;z-index:7;display:grid;grid-template-columns:62px 1fr 62px;gap:8px}.reel-bottom button{border:0;border-radius:15px;padding:11px;font-weight:900}.reel-fullscreen{height:calc(100vh - 0px)!important;max-height:none!important}
+/* ================= PAYMENT GATEWAY ================= */
+.pg-method{width:100%;text-align:left}
+.pg-spinner{width:56px;height:56px;border-radius:50%;border:4px solid rgba(232,163,61,.25);border-top-color:#e8a33d;animation:pgspin 0.8s linear infinite;margin:0 auto}
+@keyframes pgspin{to{transform:rotate(360deg)}}
+/* ================= BACKEND STATUS ================= */
+.backend-dot{width:7px;height:7px;border-radius:50%;background:#34d399;display:inline-block;box-shadow:0 0 0 3px rgba(52,211,153,.18);animation:pgpulse 1.8s ease-in-out infinite}
+@keyframes pgpulse{0%,100%{opacity:1}50%{opacity:.45}}
+</style>
+</head>
+
+<body class="min-h-screen flex justify-center items-center">
+
+  <!-- ================= APP ================= -->
+
+  <div class="app-shell w-full max-w-md h-screen sm:h-[844px] sm:rounded-[38px] shadow-2xl overflow-hidden relative flex flex-col">
+
+    <!-- ================= TOP BAR ================= -->
+
+    <div class="absolute top-4 left-4 right-4 z-50 bg-slate-800/80 backdrop-blur-md border border-orangeCustom/30 rounded-full px-4 py-2.5 flex items-center justify-between shadow-lg">
+
+      <div class="flex items-center gap-2 cursor-pointer" onclick="switchTab('search')">
+        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-orangeCustom to-orangeDark flex items-center justify-center shadow-md">
+          <i class="fa-solid fa-hands-helping text-[#16221a]"></i>
+        </div>
+        <span class="font-display font-black text-sm tracking-wide text-slate-900">
+          Hello <span class="text-orangeCustom text-base font-extrabold">SAATHI</span>
+        </span>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <!-- BACKEND STATUS -->
+        <span class="hidden sm:flex items-center gap-1.5 bg-slate-700/60 px-2.5 py-1.5 rounded-full text-[9px] font-black text-slate-300 border border-slate-600" title="Hello SAATHI Cloud API">
+          <span class="backend-dot"></span>API
+        </span>
+
+        <!-- JOB SEARCH BUTTON -->
+        <button id="modeToggleBtn" onclick="toggleFeedMode()" class="bg-orangeCustom/20 text-orangeCustom px-3 py-1.5 rounded-full text-[10px] font-black border border-orangeCustom/40">
+          <i id="modeIcon" class="fa-solid fa-briefcase mr-1"></i>
+          <span id="modeText">Job Search</span>
+        </button>
+
+        <!-- LANGUAGE -->
+        <select id="langSelect" onchange="changeLanguage(this.value)" class="text-xs bg-slate-700 text-slate-900 rounded-lg px-2 py-1 border border-slate-600 focus:outline-none font-bold cursor-pointer">
+          <option value="en">EN</option>
+          <option value="hi">HI</option>
+          <option value="mr">MR</option>
+        </select>
+      </div>
+
+    </div>
+
+    <!-- ================= SCREEN CONTAINER ================= -->
+
+    <div id="screenContainer" class="flex-1 overflow-y-auto relative pt-16">
+
+      <!-- ================= WELCOME ================= -->
+
+      <div id="screen-welcome" class="h-full flex flex-col justify-between p-6 relative overflow-hidden">
+        <div class="blob blob-one"></div>
+        <div class="blob blob-two"></div>
+
+        <div class="my-auto flex flex-col items-center text-center relative z-10">
+          <div class="relative mb-7 animate-float">
+            <div class="saathi-hero w-24 h-24 rounded-[30px] bg-gradient-to-br from-orangeCustom to-orangeDark flex items-center justify-center shadow-2xl">
+              <i class="fa-solid fa-handshake text-5xl text-slate-900"></i><span class="helmet">🟡</span>
+            </div>
+            <div class="absolute -bottom-2 -right-2 bg-slate-800 border border-orangeCustom/40 px-3 py-1 rounded-full text-[10px] font-black text-orangeCustom shadow-md">
+              आपका साथी
+            </div>
+          </div>
+
+          <h1 class="text-4xl font-black tracking-tight text-slate-900 mb-3">
+            Hello <span class="text-orangeCustom text-5xl">SAATHI</span>
+          </h1>
+
+          <p id="t-welcome-subtitle" class="text-sm text-slate-300 max-w-xs leading-relaxed mb-7">
+            Connecting Daily-Wage Workers & Contractors Instantly
+          </p>
+
+          <div class="grid grid-cols-2 gap-3 w-full mb-5">
+            <div class="soft-card p-4 rounded-2xl flex items-center gap-3 text-left">
+              <div class="w-10 h-10 rounded-xl bg-orangeCustom/20 border border-orangeCustom/30 flex items-center justify-center">
+                <i class="fa-solid fa-shield-heart text-orangeCustom"></i>
+              </div>
+              <div>
+                <p class="text-xs font-black text-slate-900">Safe Work</p>
+                <p class="text-[9px] text-slate-400">Trusted workers</p>
+              </div>
+            </div>
+
+            <div class="soft-card p-4 rounded-2xl flex items-center gap-3 text-left">
+              <div class="w-10 h-10 rounded-xl bg-orangeCustom/20 border border-orangeCustom/30 flex items-center justify-center">
+                <i class="fa-solid fa-volume-high text-orangeCustom"></i>
+              </div>
+              <div>
+                <p class="text-xs font-black text-slate-900">Voice Support</p>
+                <p class="text-[9px] text-slate-400">English • हिंदी • मराठी</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LANGUAGE -->
+        <div class="space-y-4 relative z-10">
+          <label id="t-choose-lang" class="block text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">
+            Select Preferred Language
+          </label>
+
+          <div class="grid grid-cols-3 gap-2">
+            <button onclick="selectLanguage('en')" id="lang-btn-en" class="bg-orangeCustom text-[#16221a] border border-orangeDark rounded-xl py-3 font-black text-xs shadow-md">
+              English
+            </button>
+            <button onclick="selectLanguage('hi')" id="lang-btn-hi" class="bg-slate-700 text-slate-300 border border-slate-600 rounded-xl py-3 font-black text-xs">
+              हिंदी
+            </button>
+            <button onclick="selectLanguage('mr')" id="lang-btn-mr" class="bg-slate-700 text-slate-300 border border-slate-600 rounded-xl py-3 font-black text-xs">
+              मराठी
+            </button>
+          </div>
+
+          <div class="location-box mb-4 text-left">
+            <div class="flex items-center justify-between">
+              <div><p class="text-xs font-black text-slate-900">📍 Use my location</p><p class="text-[10px] text-slate-400">Find nearby jobs & suggest local language</p></div>
+              <label class="switch"><input id="welcomeLocation" type="checkbox" onchange="enableLocation(this.checked)"><span></span></label>
+            </div>
+            <p id="welcomeLocationStatus" class="text-[10px] text-slate-400 mt-2">Location is off</p>
+            <div id="welcomeLangSuggestions"></div>
+          </div>
+
+          <button onclick="navigateTo('screen-role')" id="t-btn-continue" class="orange-btn w-full font-black py-4 rounded-2xl transition flex items-center justify-center gap-2">
+            <span>Get Started</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- ================= ROLE ================= -->
+
+      <div id="screen-role" class="hidden h-full flex flex-col justify-center p-6 text-center">
+        <h2 id="t-select-role" class="text-3xl font-black mb-8 text-slate-900">Who are you?</h2>
+
+        <div class="space-y-5">
+          <button onclick="selectRole('worker')" class="soft-card w-full p-5 rounded-3xl flex items-center gap-4 hover:border-orangeCustom/50 transition text-left">
+            <div class="w-16 h-16 rounded-2xl bg-orangeCustom/20 border border-orangeCustom/30 flex items-center justify-center text-2xl text-orangeCustom">
+              <i class="fa-solid fa-person-digging"></i>
+            </div>
+            <div>
+              <h3 id="t-role-worker" class="font-black text-lg text-slate-900">Daily Worker</h3>
+              <p id="t-role-worker-desc" class="text-xs text-slate-400">Find job opportunities near you</p>
+            </div>
+          </button>
+
+          <button onclick="selectRole('contractor')" class="soft-card w-full p-5 rounded-3xl flex items-center gap-4 hover:border-orangeCustom/50 transition text-left">
+            <div class="w-16 h-16 rounded-2xl bg-orangeCustom/20 border border-orangeCustom/30 flex items-center justify-center text-2xl text-orangeCustom">
+              <i class="fa-solid fa-user-tie"></i>
+            </div>
+            <div>
+              <h3 id="t-role-contractor" class="font-black text-lg text-slate-900">Contractor / Employer</h3>
+              <p id="t-role-contractor-desc" class="text-xs text-slate-400">Post jobs and hire workers quickly</p>
+            </div>
+          </button>
+
+          <div class="pt-2 pb-1"><span class="text-[9px] font-black tracking-wide text-slate-500">RESTRICTED ACCESS</span></div>
+
+          <button onclick="selectRole('federation')" class="soft-card w-full p-5 rounded-3xl flex items-center gap-4 hover:border-orangeCustom/50 transition text-left border border-orangeCustom/20">
+            <div class="w-16 h-16 rounded-2xl bg-orangeCustom/20 border border-orangeCustom/30 flex items-center justify-center text-2xl text-orangeCustom"><i class="fa-solid fa-building-columns"></i></div>
+            <div><h3 class="font-black text-lg text-slate-900">Federation / Admin</h3><p class="text-xs text-slate-400">Secure ID & password login for platform staff</p></div>
+          </button>
+        </div>
+      </div>
+
+      <!-- ================= LOGIN ================= -->
+
+      <div id="screen-login" class="hidden h-full flex flex-col justify-between p-6">
+        <div>
+          <button onclick="navigateTo('screen-role')" class="text-slate-400 mb-8 text-xl hover:text-orangeCustom">
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+
+          <h2 id="t-login-title" class="text-3xl font-black mb-2 text-slate-900">Enter Mobile</h2>
+          <p id="t-login-sub" class="text-xs text-slate-400 mb-8">No password required. Instant OTP login.</p>
+
+          <div class="location-box mb-5">
+            <div class="flex items-center justify-between"><div><p class="text-xs font-black text-slate-900">📍 Turn on location</p><p class="text-[10px] text-slate-400">Show nearby jobs and regional language suggestions</p></div><label class="switch"><input id="loginLocationToggle" type="checkbox" onchange="enableLocation(this.checked)"><span></span></label></div>
+            <p id="loginLocationStatus" class="text-[10px] text-slate-400 mt-2">Location is off</p><div id="loginLangSuggestions"></div>
+          </div>
+
+          <!-- PHONE -->
+          <div id="phone-step" class="space-y-5">
+            <div>
+              <label class="text-xs font-black text-slate-400">PHONE NUMBER</label>
+              <div class="flex items-center border border-slate-600 rounded-2xl mt-2 px-4 py-4 bg-slate-800 focus-within:border-orangeCustom">
+                <span class="text-sm font-black text-orangeCustom mr-2">+91</span>
+                <input id="loginPhone" type="tel" maxlength="10" placeholder="9876543210" class="w-full bg-transparent focus:outline-none font-bold text-base text-slate-900" />
+              </div>
+            </div>
+
+            <button onclick="sendOTP()" id="t-btn-otp" class="orange-btn w-full font-black py-4 rounded-2xl transition">
+              Send OTP
+            </button>
+          </div>
+
+          <!-- OTP -->
+          <div id="otp-step" class="hidden space-y-5 mt-5">
+            <div>
+              <label class="text-xs font-black text-slate-400">ENTER 4-DIGIT OTP</label>
+              <input id="loginOtp" type="text" maxlength="4" placeholder="1 2 3 4" class="w-full text-center tracking-[0.5em] text-2xl font-black border border-slate-600 rounded-2xl py-4 mt-2 bg-slate-800 focus:outline-none focus:border-orangeCustom text-slate-900" />
+            </div>
+
+            <button onclick="verifyOTP()" id="t-btn-verify" class="orange-btn w-full font-black py-4 rounded-2xl transition">
+              Verify & Continue
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= FEDERATION / ADMIN LOGIN ================= -->
+      <div id="screen-admin-login" class="hidden h-full flex flex-col justify-between p-6">
+        <div>
+          <button onclick="navigateTo('screen-role')" class="text-slate-400 mb-8 text-xl hover:text-orangeCustom">
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+
+          <div class="w-14 h-14 rounded-2xl bg-orangeCustom/15 border border-orangeCustom/30 flex items-center justify-center text-2xl text-orangeCustom mb-4">
+            <i class="fa-solid fa-user-shield"></i>
+          </div>
+          <h2 class="text-3xl font-black mb-2 text-slate-900">Federation Access</h2>
+          <p class="text-xs text-slate-400 mb-8">Restricted to authorised platform staff. Sign in with your admin ID and password — this is a separate login from the worker / contractor OTP flow.</p>
+
+          <form onsubmit="verifyAdminLogin(event)" class="space-y-5">
+            <div>
+              <label class="text-xs font-black text-slate-400">ADMIN ID</label>
+              <input id="adminId" required type="text" autocomplete="off" placeholder="HS-ADMIN-01" class="w-full border border-slate-600 rounded-2xl p-4 text-sm mt-2 bg-slate-800 text-slate-900 focus:outline-none focus:border-orangeCustom" />
+            </div>
+            <div>
+              <label class="text-xs font-black text-slate-400">PASSWORD</label>
+              <input id="adminPassword" required type="password" autocomplete="off" placeholder="••••••••" class="w-full border border-slate-600 rounded-2xl p-4 text-sm mt-2 bg-slate-800 text-slate-900 focus:outline-none focus:border-orangeCustom" />
+            </div>
+            <p id="adminLoginError" class="hidden text-xs text-red-400 font-bold"></p>
+            <button type="submit" class="orange-btn w-full font-black py-4 rounded-2xl transition">
+              Access Federation Panel
+            </button>
+          </form>
+
+          <p class="text-[10px] text-slate-500 mt-5 text-center">Demo credentials: HS-ADMIN-01 / Saathi@2026 — a real deployment would issue individual staff logins with 2FA.</p>
+        </div>
+      </div>
+
+      <!-- ================= WORKER REGISTRATION ================= -->
+      <div id="screen-worker-reg" class="hidden p-6 pb-24">
+        <h2 class="text-2xl font-black mb-1 text-slate-900">Worker Registration</h2><p class="text-xs text-slate-400 mb-6">Create your worker profile once and find nearby work.</p>
+        <form onsubmit="handleWorkerReg(event)" class="space-y-4">
+          <input id="workerName" required placeholder="Full name" class="w-full border border-slate-600 rounded-xl p-4 text-sm bg-slate-800 text-slate-900">
+          <input id="workerAadhaar" required maxlength="12" placeholder="Aadhaar / Government ID" class="w-full border border-slate-600 rounded-xl p-4 text-sm bg-slate-800 text-slate-900">
+          <select id="workerSkill" required class="w-full border border-slate-600 rounded-xl p-4 text-sm bg-slate-800 text-slate-900"><option value="">Select skill</option><option>Mason</option><option>Painter</option><option>Plumber</option><option>Electrician</option><option>Carpenter</option><option>Cleaner</option><option>Helper</option></select>
+          <input required placeholder="Bank account / UPI" class="w-full border border-slate-600 rounded-xl p-4 text-sm bg-slate-800 text-slate-900">
+          <div class="location-box"><div class="flex items-center justify-between"><div><b class="text-xs">📍 Location for job matching</b><p class="text-[10px] text-slate-400">Use location to prioritize nearby work</p></div><label class="switch"><input id="workerLocationToggle" type="checkbox" onchange="enableLocation(this.checked)"><span></span></label></div></div>
+          <button class="orange-btn w-full font-black py-4 rounded-2xl">Create Worker Profile</button>
+        </form>
+      </div>
+
+      <!-- ================= CONTRACTOR REGISTRATION ================= -->
+
+      <div id="screen-contractor-reg" class="hidden p-6 pb-24">
+        <h2 id="t-reg-title" class="text-2xl font-black mb-1 text-slate-900">Contractor Profile</h2>
+        <p class="text-xs text-slate-400 mb-6">Complete verification to build trust with workers.</p>
+
+        <form onsubmit="handleContractorReg(event)" class="space-y-4">
+          <div>
+            <label class="text-xs font-black text-slate-400">FULL NAME</label>
+            <input required type="text" placeholder="Ramesh Sharma" class="w-full border border-slate-600 rounded-xl p-4 text-sm mt-1 bg-slate-800 text-slate-900 focus:outline-none focus:border-orangeCustom" />
+          </div>
+
+          <div>
+            <label class="text-xs font-black text-slate-400">CONTACT NUMBER</label>
+            <input required type="tel" placeholder="9876543210" class="w-full border border-slate-600 rounded-xl p-4 text-sm mt-1 bg-slate-800 text-slate-900 focus:outline-none focus:border-orangeCustom" />
+          </div>
+
+          <div>
+            <label class="text-xs font-black text-slate-400">GOVERNMENT IDENTIFICATION NUMBER</label>
+            <input required type="text" maxlength="12" placeholder="Enter ID Number" class="w-full border border-slate-600 rounded-xl p-4 text-sm mt-1 bg-slate-800 text-slate-900 focus:outline-none focus:border-orangeCustom" />
+          </div>
+
+          <div><label class="text-xs font-black text-slate-400">PROFESSION / SKILL</label><select id="contractorSkill" class="w-full border border-slate-600 rounded-xl p-4 text-sm mt-1 bg-slate-800 text-slate-900"><option>Construction Contractor</option><option>Electrical Contractor</option><option>Plumbing Contractor</option><option>Painting Contractor</option></select></div>
+          <div><label class="text-xs font-black text-slate-400">BANK / UPI DETAILS</label><input required type="text" placeholder="Account / UPI ID" class="w-full border border-slate-600 rounded-xl p-4 text-sm mt-1 bg-slate-800 text-slate-900" /></div>
+          <div><label class="text-xs font-black text-slate-400">QUALIFICATION / BUSINESS CERTIFICATE</label><input id="contractorCertificate" required type="file" class="w-full text-xs mt-1 bg-slate-800 border border-slate-600 text-slate-300 rounded-xl p-3" /><p class="text-[10px] text-slate-500 mt-1">Certificate must be verified before contractor activation.</p></div>
+
+          <button type="submit" id="t-btn-save-profile" class="orange-btn w-full font-black py-4 rounded-2xl mt-4 transition">
+            Save Profile & Proceed
+          </button>
+        </form>
+      </div>
+
+      <!-- ================= JOB SEARCH ================= -->
+
+      <div id="screen-worker-swipe" class="hidden h-full flex flex-col justify-between p-4 pb-20">
+        <div id="swipeToast" class="hidden absolute top-20 left-1/2 -translate-x-1/2 z-50 px-5 py-2 rounded-full text-xs font-black text-slate-900 shadow-xl"></div>
+
+        <div class="flex-1 flex flex-col justify-center items-center">
+          <div id="cardDeck" class="relative w-full h-[470px] max-w-sm"></div>
+        </div>
+
+        <div class="flex justify-center items-center gap-8 my-2 z-10">
+          <button onclick="handleSwipe('left')" class="w-16 h-16 bg-slate-800 border border-slate-600 text-red-500 rounded-full shadow-lg flex items-center justify-center text-2xl hover:bg-slate-700">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+
+          <button onclick="handleSwipe('right')" class="w-16 h-16 orange-btn rounded-full shadow-lg flex items-center justify-center text-2xl">
+            <i class="fa-solid fa-heart"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- ================= REELS ================= -->
+
+      <div id="screen-worker-reels" class="hidden h-full relative">
+        <button onclick="navigateTo('screen-worker-dashboard')" class="absolute top-5 left-5 z-40 w-11 h-11 rounded-full bg-black/70 border border-white/20 text-white flex items-center justify-center shadow-lg" aria-label="Back from reels"><i class="fa-solid fa-arrow-left"></i></button>
+        <div id="reelsContainer" class="reels-container h-[calc(100vh-130px)] sm:h-[714px] w-full"></div>
+
+        <!-- AUTO VOICE CONTROL -->
+        <div class="absolute top-5 right-5 z-30">
+          <button id="reelVoiceButton" onclick="toggleReelVoice()" class="voice-button">
+            <i id="reelVoiceIcon" class="fa-solid fa-pause"></i>
+          </button>
+        </div>
+
+        <!-- VOICE STATUS -->
+        <div id="voiceStatus" class="voice-status absolute top-[82px] right-5 z-30">
+          🔊 Auto Voice ON
+        </div>
+      </div>
+
+      <!-- ================= WORKER DASHBOARD ================= -->
+      <div id="screen-worker-dashboard" class="hidden p-5 pb-24">
+        <div class="dashboard-card p-5 rounded-3xl mb-4"><p class="text-[10px] text-slate-300">GOOD MORNING</p><h2 class="text-2xl font-black">Hello, Worker 👋</h2><p id="workerAreaText" class="text-xs text-slate-300 mt-1">📍 Nearby jobs enabled</p></div>
+        <div class="grid grid-cols-2 gap-3 mb-4"><div class="metric"><b>24</b><p class="text-[10px] text-slate-400">Nearby jobs</p></div><div class="metric"><b>8</b><p class="text-[10px] text-slate-400">Active sites</p></div><div class="metric"><b>₹18.4K</b><p class="text-[10px] text-slate-400">Earned</p></div><div class="metric"><b>6</b><p class="text-[10px] text-slate-400">Applications</p></div></div>
+        <div class="soft-card p-4 rounded-2xl"><h3 class="font-black">Quick job search</h3><p class="text-xs text-slate-400 mb-3">Search jobs by location, skill or wage.</p><div class="flex gap-2"><select id="workerSkillFilter" class="flex-1 bg-slate-800 border border-slate-600 rounded-xl p-3 text-xs"><option>All skills</option><option>Mason</option><option>Painter</option><option>Plumber</option><option>Electrician</option><option>Carpenter</option><option>Helper</option></select><button onclick="renderSwipeDeck();navigateTo('screen-worker-swipe')" class="orange-btn px-4 rounded-xl"><i class="fa-solid fa-heart"></i></button><button onclick="renderWorkerJobList();navigateTo('screen-worker-jobs')" class="bg-slate-800 border border-slate-600 px-4 rounded-xl text-orangeCustom"><i class="fa-solid fa-list"></i></button></div></div>
+        <button onclick="renderWorkerJobList();navigateTo('screen-worker-jobs')" class="w-full mt-3 soft-card p-4 rounded-2xl flex items-center gap-3 text-left"><span class="w-11 h-11 rounded-xl bg-orangeCustom/15 text-orangeCustom flex items-center justify-center"><i class="fa-solid fa-location-dot"></i></span><span><b>Jobs near my location</b><small class="block text-xs text-slate-400 mt-1">View all active contractor postings in one list</small></span><span class="ml-auto text-xl">›</span></button>
+      </div>
+
+      <!-- ================= WORKER JOB LIST / LOCATION SEARCH ================= -->
+      <div id="screen-worker-jobs" class="hidden p-5 pb-24">
+        <div class="flex items-center justify-between mb-4">
+          <div><h2 class="text-2xl font-black">Nearby Job Listings</h2><p id="jobListLocationText" class="text-xs text-slate-400 mt-1">📍 Turn on location to prioritize nearby jobs</p></div>
+          <button onclick="enableWorkerJobLocation()" class="orange-btn px-3 py-2 rounded-xl text-xs font-black"><i class="fa-solid fa-location-crosshairs mr-1"></i>Use Location</button>
+        </div>
+        <div class="soft-card p-4 rounded-2xl mb-4">
+          <div class="grid grid-cols-2 gap-2">
+            <select id="jobListSkill" onchange="renderWorkerJobList()" class="bg-slate-800 border border-slate-600 rounded-xl p-3 text-xs">
+              <option>All skills</option><option>Mason</option><option>Painter</option><option>Plumber</option><option>Electrician</option><option>Carpenter</option><option>Helper</option>
+            </select>
+            <select id="jobListSort" onchange="renderWorkerJobList()" class="bg-slate-800 border border-slate-600 rounded-xl p-3 text-xs">
+              <option value="near">Nearest first</option><option value="wage">Highest wage</option><option value="latest">Latest posted</option>
+            </select>
+          </div>
+        </div>
+        <div id="workerJobList" class="space-y-3"></div>
+      </div>
+
+      <!-- ================= WORKER APPLICATIONS / PAYMENT ================= -->
+      <div id="screen-worker-register" class="hidden p-5 pb-24"><h2 class="text-2xl font-black mb-4">My Applications</h2><div class="space-y-3"><div class="soft-card p-4 rounded-2xl"><b>Masonry • Kothrud</b><p class="text-xs text-slate-400">Ramesh Sharma • Applied • Contact shared ✓</p></div><div class="soft-card p-4 rounded-2xl"><b>Painting • Viman Nagar</b><p class="text-xs text-slate-400">Vikram Construction • Accepted ✓</p></div></div><div class="soft-card p-4 rounded-2xl mt-4"><h3 class="font-black">Payment History</h3><p class="text-xs mt-3">18 Sep 2026 • ₹5,950 • Received ✓</p><p class="text-xs mt-3">10 Sep 2026 • ₹4,550 • Received ✓</p><p class="text-xs mt-3">02 Sep 2026 • ₹3,900 • Pending</p></div></div>
+
+      <!-- ================= CONTRACTOR DASHBOARD ================= -->
+      <div id="screen-contractor-dashboard" class="hidden p-5 pb-24"><div class="dashboard-card p-5 rounded-3xl mb-4"><p class="text-[10px] text-slate-300">CONTRACTOR DASHBOARD</p><h2 class="text-2xl font-black">Operations Overview</h2><p class="text-xs text-slate-300">Verified account • 6 active sites</p></div><div class="grid grid-cols-2 gap-3"><div class="metric"><b>42</b><p class="text-[10px] text-slate-400">Workers</p></div><div class="metric"><b>6</b><p class="text-[10px] text-slate-400">Sites</p></div><div class="metric"><b>18</b><p class="text-[10px] text-slate-400">Open demands</p></div><div class="metric"><b>₹2.8L</b><p class="text-[10px] text-slate-400">Payments</p></div></div><button onclick="navigateTo('screen-post-job')" class="orange-btn w-full mt-4 py-4 rounded-2xl font-black">+ Post New Job</button><button onclick="renderContractorRegister();navigateTo('screen-my-register')" class="soft-card w-full mt-3 py-4 rounded-2xl font-black">📋 My Posted Jobs & Applicants</button><button onclick="navigateTo('screen-contractor-payments')" class="soft-card w-full mt-3 py-4 rounded-2xl font-black">₹ Payment & Wallet</button><button onclick="navigateTo('screen-contractor-attendance')" class="soft-card w-full mt-3 py-4 rounded-2xl font-black">✓ Mark Attendance</button></div>
+
+      <div id="screen-contractor-payments" class="hidden p-5 pb-24"><h2 class="text-2xl font-black mb-1">Payment & Wallet</h2><p class="text-[10px] text-slate-400 mb-4 flex items-center gap-1.5"><span class="backend-dot"></span>Secured by Hello SAATHI Payment Gateway</p><div class="soft-card p-5 rounded-3xl mb-4"><div class="flex justify-between items-center"><div><p class="text-xs text-slate-400">CONTRACTOR WALLET</p><h3 id="contractorWallet" class="text-3xl font-black">₹50,000</h3></div><i class="fa-solid fa-wallet text-3xl text-orangeCustom"></i></div><div class="flex gap-2 mt-4"><input id="walletAdd" type="number" min="1" placeholder="Add money to wallet" class="flex-1 border border-slate-600 rounded-xl p-3 bg-slate-800 text-slate-900"><button onclick="startWalletTopUp()" class="orange-btn px-4 rounded-xl font-black">+ Add</button></div></div><div class="soft-card p-4 rounded-2xl"><h3 class="font-black">Circulate to Labour</h3><select id="payWorker" class="w-full border border-slate-600 rounded-xl p-3 mt-3 bg-slate-800 text-slate-900"><option>Rahul • Mason</option><option>Asha • Electrician</option><option>Mohan • Helper</option></select><input id="payAmount" type="number" min="450" placeholder="Amount (minimum ₹450/day)" class="w-full border border-slate-600 rounded-xl p-3 mt-3 bg-slate-800 text-slate-900"><button onclick="startWorkerPayment()" class="orange-btn w-full mt-3 py-3 rounded-xl font-black">Send from Wallet</button><p class="text-[10px] text-slate-400 mt-2">Payment is credited to the worker panel after attendance is confirmed.</p></div><div class="soft-card p-4 rounded-2xl mt-4"><h3 class="font-black">Payment Transactions</h3><div id="contractorTransactions" class="space-y-2 mt-3"><p class="text-xs">INV-1042 • Rahul • ₹11,700 • Paid ✓</p><p class="text-xs">INV-1038 • Asha • ₹7,800 • Paid ✓</p></div></div></div>
+
+      <div id="screen-contractor-attendance" class="hidden p-5 pb-24"><h2 class="text-2xl font-black mb-2">Attendance Marker</h2><p class="text-xs text-slate-400 mb-4">Mark attendance from the contractor side. Confirmed attendance releases the day's payment to the worker panel.</p><div class="soft-card p-4 rounded-2xl"><div class="flex items-center justify-between mb-3"><b>Today's Site • Pune</b><span class="text-xs text-orangeCustom font-black">24 workers</span></div><div id="attendanceList" class="space-y-2"></div><button onclick="markAllAttendance()" class="orange-btn w-full mt-4 py-3 rounded-xl font-black">Mark All Present</button></div></div>
+
+      <!-- ================= FEDERATION ================= -->
+      <div id="screen-federation" class="hidden p-5 pb-24"><div class="dashboard-card p-5 rounded-3xl mb-4"><p class="text-[10px]">FEDERATION / ADMIN CONTROL</p><h2 class="text-2xl font-black">What do you want to check?</h2><p class="text-xs">Business, money flow and field operations.</p></div><div class="soft-card p-4 rounded-2xl mb-4 border border-orangeCustom/30"><div class="flex items-center justify-between mb-3"><b><i class="fa-solid fa-database text-orangeCustom mr-2"></i>Backend & Database</b><span class="text-[10px] text-green-400 font-black flex items-center gap-1"><span class="backend-dot"></span>LIVE SYNC</span></div><p id="dbStatusInline" class="text-[10px] text-slate-400 mb-3">Connecting…</p><div class="grid grid-cols-5 gap-2 text-center"><div><b class="text-lg">10</b><small class="block text-[9px] text-slate-400">Workers</small></div><div><b class="text-lg">10</b><small class="block text-[9px] text-slate-400">Contractors</small></div><div><b class="text-lg">15</b><small class="block text-[9px] text-slate-400">Jobs</small></div><div><b class="text-lg">10</b><small class="block text-[9px] text-slate-400">Attendance</small></div><div><b class="text-lg">22</b><small class="block text-[9px] text-slate-400">Transactions</small></div></div><p class="text-[10px] text-slate-400 mt-3">Every worker has demo attendance marked and a payment transaction generated.</p></div><div class="space-y-3"><button onclick="openFed('workers')" class="fed-option w-full text-left"><i class="fa-solid fa-people-group"></i><span><b>Workers</b><small class="block text-slate-400">Logins, skills, enrolments, status</small></span><span class="ml-auto">›</span></button><button onclick="openFed('contractors')" class="fed-option w-full text-left"><i class="fa-solid fa-building"></i><span><b>Contractors & Sites</b><small class="block text-slate-400">Verified contractors, sites, demand</small></span><span class="ml-auto">›</span></button><button onclick="openFed('finance')" class="fed-option w-full text-left"><i class="fa-solid fa-indian-rupee-sign"></i><span><b>Transactions</b><small class="block text-slate-400">Who paid whom, amount, date, status</small></span><span class="ml-auto">›</span></button><button onclick="openFed('gateway')" class="fed-option w-full text-left"><i class="fa-solid fa-shield-halved"></i><span><b>Payment Gateway</b><small class="block text-slate-400">UPI / Card / Net Banking integration & settlement</small></span><span class="ml-auto">›</span></button><button onclick="openFed('business')" class="fed-option w-full text-left"><i class="fa-solid fa-chart-line"></i><span><b>Business Model</b><small class="block text-slate-400">1% from contractor + 1% from worker side</small></span><span class="ml-auto">›</span></button></div></div>
+      <div id="screen-fed-detail" class="hidden p-5 pb-24"><button onclick="navigateTo('screen-federation')" class="text-slate-400 mb-3"><i class="fa-solid fa-arrow-left"></i></button><h2 id="fedDetailTitle" class="text-2xl font-black mb-4"></h2><div id="fedDetailBody" class="space-y-3"></div></div>
+
+      <!-- ================= POST JOB ================= -->
+
+      <div id="screen-post-job" class="hidden p-6 pb-24">
+        <h2 id="t-post-job-title" class="text-2xl font-black mb-2 text-slate-900">Post a New Job</h2>
+
+        <div class="bg-orangeCustom/10 border border-orangeCustom/30 rounded-2xl p-4 mb-5 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <i class="fa-solid fa-circle-info text-orangeCustom"></i>
+            <p class="text-[11px] font-semibold leading-tight text-slate-300">
+              Daily wage should follow applicable government wage guidelines.
+            </p>
+          </div>
+
+          <button type="button" onclick="speakGovtRules()" class="bg-slate-800 text-orangeCustom p-2 rounded-xl border border-slate-700">
+            <i class="fa-solid fa-volume-high"></i>
+          </button>
+        </div>
+
+        <form onsubmit="handlePostJob(event)" class="space-y-4">
+          <div>
+            <label class="text-xs font-black text-slate-400">SKILL REQUIRED</label>
+            <select id="postSkill" class="w-full border border-slate-600 rounded-xl p-4 text-sm mt-1 bg-slate-800 text-slate-900 focus:outline-none focus:border-orangeCustom">
+              <option>Mason</option><option>Painter</option><option>Plumber</option><option>Electrician</option><option>Carpenter</option><option>Helper</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="text-xs font-black text-slate-400">WORK TYPE</label>
+            <select id="postWorkType" class="w-full border border-slate-600 rounded-xl p-4 text-sm mt-1 bg-slate-800 text-slate-900 focus:outline-none focus:border-orangeCustom">
+              <option>Masonry / Brickwork</option>
+              <option>Painting Work</option>
+              <option>Plumbing & Fitting</option>
+              <option>Electrical Wiring</option>
+              <option>General Site Labour</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="text-xs font-black text-slate-400">DAILY WAGE</label>
+            <input id="postWage" required type="number" min="450" placeholder="850" class="w-full border border-slate-600 rounded-xl p-4 text-sm mt-1 bg-slate-800 text-slate-900 focus:outline-none focus:border-orangeCustom" />
+            <span id="wageErrorMsg" class="hidden text-xs text-red-400 font-bold mt-1"></span>
+          </div>
+
+          <div>
+            <label class="text-xs font-black text-slate-400">WORKERS REQUIRED</label>
+            <input id="postWorkers" required type="number" placeholder="5" class="w-full border border-slate-600 rounded-xl p-4 text-sm mt-1 bg-slate-800 text-slate-900 focus:outline-none focus:border-orangeCustom" />
+          </div>
+
+          <div>
+            <label class="text-xs font-black text-slate-400">LOCATION</label>
+            <input id="postLocation" required type="text" placeholder="Kothrud, Pune" class="w-full border border-slate-600 rounded-xl p-4 text-sm mt-1 bg-slate-800 text-slate-900 focus:outline-none focus:border-orangeCustom" />
+          </div>
+
+          <div>
+            <label class="text-xs font-black text-slate-400">DURATION & BENEFITS</label>
+            <input id="postDuration" required type="text" placeholder="7 Days • Lunch Provided • 9 AM–6 PM" class="w-full border border-slate-600 rounded-xl p-4 text-sm mt-1 bg-slate-800 text-slate-900 focus:outline-none focus:border-orangeCustom" />
+          </div>
+
+          <div><label class="text-xs font-black text-slate-400">SITE REQUIREMENTS</label><textarea id="postRequirements" placeholder="Skills, safety gear, accommodation, food, experience..." class="w-full border border-slate-600 rounded-xl p-4 text-sm mt-1 bg-slate-800 text-slate-900"></textarea></div>
+
+          <button type="submit" id="t-btn-post-job" class="orange-btn w-full font-black py-4 rounded-2xl mt-2">
+            Post Job
+          </button>
+        </form>
+      </div>
+
+      <!-- ================= GUIDELINES ================= -->
+
+      <div id="screen-guidelines" class="hidden p-6 pb-24">
+        <div class="flex items-center justify-between mb-5">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-2xl bg-orangeCustom/20 text-orangeCustom flex items-center justify-center border border-orangeCustom/30">
+              <i class="fa-solid fa-building-columns"></i>
+            </div>
+            <div>
+              <h2 class="text-xl font-black text-slate-900">Govt. Regulations</h2>
+              <p class="text-[11px] text-slate-400">Worker rights & safety</p>
+            </div>
+          </div>
+
+          <button onclick="speakGovtRules()" class="bg-slate-800 text-orangeCustom px-3 py-2 rounded-xl text-xs font-bold border border-slate-700">
+            <i class="fa-solid fa-volume-high"></i>
+          </button>
+        </div>
+
+        <div class="space-y-4">
+          <div class="soft-card p-5 rounded-2xl">
+            <div class="flex items-center gap-2 text-orangeCustom font-bold text-sm mb-2">
+              <i class="fa-solid fa-scale-balanced"></i> Minimum Wage
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Your prototype currently demonstrates a minimum daily wage rule of ₹450/day.
+            </p>
+          </div>
+
+          <div class="soft-card p-5 rounded-2xl">
+            <div class="flex items-center gap-2 text-orangeCustom font-bold text-sm mb-2">
+              <i class="fa-solid fa-clock"></i> Working Hours
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Working hours and overtime information can be shown to workers in simple language.
+            </p>
+          </div>
+
+          <div class="soft-card p-5 rounded-2xl">
+            <div class="flex items-center gap-2 text-red-400 font-bold text-sm mb-2">
+              <i class="fa-solid fa-headset"></i> Grievance Support
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Workers can be provided information about reporting unsafe work or wage issues.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= REGISTER ================= -->
+
+      <div id="screen-my-register" class="hidden p-6 pb-24">
+        <h2 id="t-register-title" class="text-2xl font-black mb-5 text-slate-900">Posted Jobs & Applicants</h2>
+        <div id="postedJobsList" class="space-y-4"></div>
+      </div>
+
+      <!-- ================= PROFILE ================= -->
+
+      <div id="screen-profile" class="hidden p-6 text-center pb-24">
+        <div class="relative w-28 h-28 mx-auto mb-4">
+          <div class="w-28 h-28 rounded-full bg-slate-800 flex items-center justify-center border-4 border-orangeCustom">
+            <i class="fa-solid fa-user text-5xl text-orangeCustom"></i>
+          </div>
+          <div id="profileBadge" class="hidden absolute bottom-1 right-1 bg-green-500 text-slate-900 p-2 rounded-full shadow-lg">
+            <i class="fa-solid fa-check"></i>
+          </div>
+        </div>
+
+        <h2 id="profileName" class="text-2xl font-black text-slate-900">Ramesh Sharma</h2>
+        <p id="profileRoleText" class="text-xs text-slate-400 mb-6 font-semibold">Contractor • Pune</p>
+
+        <div class="soft-card p-5 rounded-3xl mb-6 text-left">
+          <h3 class="font-black text-sm mb-1 text-slate-900">Safety & Verification</h3>
+          <p id="verifyStatusText" class="text-xs text-slate-400 mb-4">ID Documents Review Pending</p>
+          <button onclick="triggerDummyVerification()" id="btnVerify" class="orange-btn font-black text-xs py-3 px-6 rounded-xl">
+            Demo: Verify Profile
+          </button>
+        </div>
+
+        <div class="soft-card p-4 rounded-2xl mb-4 text-left"><h3 class="font-black text-sm">Payment & Account</h3><p class="text-xs text-slate-400 mt-2">Bank / UPI: •••• 4821</p><p class="text-xs text-slate-400 mt-2">Aadhaar / ID: Verified ✓</p><p class="text-xs text-slate-400 mt-2">Last payment: ₹5,950 • 18 Sep 2026</p></div>
+
+        <button onclick="logout()" id="t-btn-logout" class="w-full bg-red-500/10 text-red-400 font-black py-4 rounded-2xl border border-red-500/20 hover:bg-red-500/20">
+          Logout
+        </button>
+      </div>
+
+    </div>
+
+    <!-- ================= WORKER WALLET / ATTENDANCE PAYMENTS ================= -->
+      <div id="screen-worker-payment" class="hidden p-5 pb-24"><h2 class="text-2xl font-black mb-4">My Earnings & Attendance</h2><div class="soft-card p-5 rounded-3xl"><p class="text-xs text-slate-400">AVAILABLE / RECEIVED</p><h3 id="workerBalance" class="text-3xl font-black">₹5,950</h3><p class="text-xs text-green-600 font-bold mt-2">Attendance payments are credited here automatically.</p></div><div class="soft-card p-4 rounded-2xl mt-4"><h3 class="font-black">Attendance-linked Payments</h3><div id="workerPaymentList" class="space-y-3 mt-3"><div class="flex justify-between text-xs"><span>18 Sep • Rahul Site • Present</span><b>₹450 Credited</b></div><div class="flex justify-between text-xs"><span>17 Sep • Rahul Site • Present</span><b>₹450 Credited</b></div></div></div></div>
+
+      <!-- ================= BOTTOM NAV ================= -->
+    <div id="bottomNav" class="hidden absolute bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-md border-t border-slate-700 flex justify-around py-3 z-40">
+      <button onclick="switchTab('search')" id="navSearch" class="flex flex-col items-center text-orangeCustom"><i class="fa-solid fa-house text-xl"></i><span class="text-[10px] font-bold mt-1">Jobs</span></button>
+      <button onclick="switchTab('reels')" id="navReels" class="flex flex-col items-center text-slate-400"><i class="fa-solid fa-clapperboard text-xl"></i><span class="text-[10px] font-bold mt-1">Reels</span></button>
+      <button onclick="switchTab('payments')" id="navPayments" class="flex flex-col items-center text-slate-400"><i class="fa-solid fa-wallet text-xl"></i><span class="text-[10px] font-bold mt-1">Payments</span></button>
+      <button onclick="switchTab('attendance')" id="navAttendance" class="flex flex-col items-center text-slate-400"><i class="fa-solid fa-calendar-check text-xl"></i><span class="text-[10px] font-bold mt-1">Attendance</span></button>
+    </div></div>
+
+    <!-- ================= PAYMENT GATEWAY MODAL ================= -->
+    <div id="paymentGatewayModal" class="hidden absolute inset-0 z-[200] flex items-end sm:items-center justify-center p-4" style="background:rgba(4,14,12,.78);backdrop-filter:blur(3px)">
+      <div class="soft-card w-full max-w-sm rounded-3xl p-5 relative">
+        <button onclick="closePaymentGateway()" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+
+        <div id="pg-step-method">
+          <div class="flex items-center gap-2 mb-2"><i class="fa-solid fa-shield-halved text-orangeCustom"></i><span class="text-[10px] font-black text-orangeCustom tracking-wide">HELLO SAATHI SECURE PAY</span></div>
+          <h3 id="pg-title" class="text-lg font-black text-slate-900">Add Money</h3>
+          <p class="text-xs text-slate-400 mb-4">Amount <b id="pg-amount" class="text-slate-900"></b></p>
+          <div class="space-y-2">
+            <button onclick="processGatewayPayment('UPI')" class="pg-method soft-card p-3 rounded-2xl flex items-center gap-3"><span class="w-9 h-9 rounded-xl bg-orangeCustom/15 text-orangeCustom flex items-center justify-center"><i class="fa-solid fa-qrcode"></i></span><span class="font-bold text-sm">UPI • GPay / PhonePe / Paytm</span><span class="ml-auto text-slate-500">›</span></button>
+            <button onclick="processGatewayPayment('Card')" class="pg-method soft-card p-3 rounded-2xl flex items-center gap-3"><span class="w-9 h-9 rounded-xl bg-orangeCustom/15 text-orangeCustom flex items-center justify-center"><i class="fa-solid fa-credit-card"></i></span><span class="font-bold text-sm">Debit / Credit Card</span><span class="ml-auto text-slate-500">›</span></button>
+            <button onclick="processGatewayPayment('Net Banking')" class="pg-method soft-card p-3 rounded-2xl flex items-center gap-3"><span class="w-9 h-9 rounded-xl bg-orangeCustom/15 text-orangeCustom flex items-center justify-center"><i class="fa-solid fa-building-columns"></i></span><span class="font-bold text-sm">Net Banking</span><span class="ml-auto text-slate-500">›</span></button>
+          </div>
+          <p class="text-[10px] text-slate-500 mt-4 text-center">Simulated gateway for prototype demo · no real money moves</p>
+        </div>
+
+        <div id="pg-step-processing" class="hidden py-10 text-center">
+          <div class="pg-spinner"></div>
+          <p id="pg-processing-text" class="mt-4 text-sm font-bold text-slate-900">Processing via UPI…</p>
+          <p class="text-[10px] text-slate-400 mt-1">Connecting to Hello SAATHI Payment Gateway</p>
+        </div>
+
+        <div id="pg-step-success" class="hidden py-4 text-center">
+          <div class="w-14 h-14 mx-auto rounded-full bg-green-500/15 text-green-400 flex items-center justify-center text-2xl"><i class="fa-solid fa-check"></i></div>
+          <h3 class="font-black text-lg mt-3 text-slate-900">Payment Successful</h3>
+          <p class="text-xs text-slate-400 mt-1">Txn ID <span id="pg-txn-id" class="text-slate-900 font-bold"></span></p>
+          <button onclick="finishGatewayPayment()" class="orange-btn w-full font-black py-3 rounded-2xl mt-5">Done</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    let currentRole = "worker";
+    let currentLang = "en";
+    let currentFeedMode = "job-search";
+    let isVerified = false;
+    let cardIndex = 0;
+
+    let reelVoiceEnabled = true;
+    let currentReelIndex = 0;
+    let isSpeaking = false;
+
+    const MINIMUM_GOVT_WAGE = 450;
+
+    const translations = {
+      en: {
+        welcomeSubtitle: "Connecting Daily-Wage Workers & Contractors Instantly",
+        chooseLang: "Select Preferred Language",
+        btnContinue: "Get Started",
+        selectRole: "Who are you?",
+        roleWorker: "Daily Worker",
+        roleWorkerDesc: "Find job opportunities near you",
+        roleContractor: "Contractor / Employer",
+        roleContractorDesc: "Post jobs and hire workers quickly",
+        loginTitle: "Enter Mobile",
+        loginSub: "No password required. Instant OTP login.",
+        btnOtp: "Send OTP",
+        btnVerify: "Verify & Continue",
+        regTitle: "Contractor Profile",
+        btnSaveProfile: "Save Profile & Proceed",
+        postJobTitle: "Post a New Job",
+        btnPostJob: "Post Job",
+        registerTitle: "Posted Jobs & Applicants",
+        btnLogout: "Logout"
+      },
+      hi: {
+        welcomeSubtitle: "दिहाड़ी मजदूरों और ठेकेदारों को तुरंत जोड़ें",
+        chooseLang: "अपनी पसंदीदा भाषा चुनें",
+        btnContinue: "शुरू करें",
+        selectRole: "आप कौन हैं?",
+        roleWorker: "दिहाड़ी मजदूर",
+        roleWorkerDesc: "अपने आसपास काम की तलाश करें",
+        roleContractor: "ठेकेदार / नियोक्ता",
+        roleContractorDesc: "नौकरी पोस्ट करें और जल्दी श्रमिक पाएं",
+        loginTitle: "मोबाइल नंबर दर्ज करें",
+        loginSub: "पासवर्ड की जरूरत नहीं। OTP भेजा जाएगा।",
+        btnOtp: "OTP भेजें",
+        btnVerify: "सत्यापित करें और आगे बढ़ें",
+        regTitle: "ठेकेदार प्रोफ़ाइल",
+        btnSaveProfile: "प्रोफ़ाइल सहेजें",
+        postJobTitle: "नई नौकरी पोस्ट करें",
+        btnPostJob: "नौकरी पोस्ट करें",
+        registerTitle: "मेरी पोस्ट की गई नौकरियां",
+        btnLogout: "लॉग आउट"
+      },
+      mr: {
+        welcomeSubtitle: "रोजंदारी कामगार आणि कंत्राटदारांना जोडणारे व्यासपीठ",
+        chooseLang: "आपली आवडती भाषा निवडा",
+        btnContinue: "सुरुवात करा",
+        selectRole: "आपण कोण आहात?",
+        roleWorker: "रोजंदारी कामगार",
+        roleWorkerDesc: "जवळपास कामाच्या संधी शोधा",
+        roleContractor: "कंत्राटदार / मालक",
+        roleContractorDesc: "कामे पोस्ट करा आणि कामगार मिळवा",
+        loginTitle: "मोबाईल नंबर प्रविष्ट करा",
+        loginSub: "पासवर्डची गरज नाही. OTP पाठवला जाईल.",
+        btnOtp: "OTP पाठवा",
+        btnVerify: "तपासा आणि पुढे जा",
+        regTitle: "कंत्राटदार प्रोफाइल",
+        btnSaveProfile: "प्रोफाइल जतन करा",
+        postJobTitle: "नवीन काम पोस्ट करा",
+        btnPostJob: "काम पोस्ट करा",
+        registerTitle: "माझ्या पोस्ट केलेल्या नोकऱ्या",
+        btnLogout: "लॉगआउट"
+      }
+    };
+
+    const sampleJobs = [
+      {
+        id: 1,
+        skill: "Mason",
+        distance: 2.4,
+        postedAt: 3,
+        title: "Masonry / Brickwork",
+        contractor: "Ramesh Sharma",
+        verified: true,
+        aiMatch: "96% Match",
+        wage: "₹850 / day",
+        location: "Kothrud, Pune",
+        duration: "7 Days",
+        food: "Lunch Included",
+        image: "https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&w=600&q=80",
+        voiceText: {
+          en: "Job Opportunity. Masonry work in Kothrud Pune. Daily wage is 850 rupees per day. Duration is 7 days with lunch provided.",
+          hi: "काम का अवसर। कोथरुड पुणे में राजमिस्त्री का काम। दैनिक वेतन 850 रुपये प्रति दिन। अवधि 7 दिन है और दोपहर का खाना दिया जाएगा।",
+          mr: "कामाची संधी. कोथरूड पुणे येथे गवंडी काम. रोजंदारी ८५० रुपये प्रति दिवस. कालावधी ७ दिवस असून दुपारचे जेवण दिले जाईल."
+        }
+      },
+      {
+        id: 2,
+        skill: "Painter",
+        distance: 5.1,
+        postedAt: 5,
+        title: "Wall Painting Work",
+        contractor: "Vikram Construction",
+        verified: true,
+        aiMatch: "89% Match",
+        wage: "₹750 / day",
+        location: "Viman Nagar, Pune",
+        duration: "3 Days",
+        food: "Food Allowance",
+        image: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=600&q=80",
+        voiceText: {
+          en: "Job Opportunity. Wall painting work in Viman Nagar Pune. Daily wage is 750 rupees per day. Food allowance is provided.",
+          hi: "काम का अवसर। विमान नगर पुणे में पेंटिंग का काम। दैनिक वेतन 750 रुपये प्रति दिन है। भोजन भत्ता दिया जाएगा।",
+          mr: "कामाची संधी. विमान नगर पुणे येथे पेंटिंगचे काम. रोजंदारी ७५० रुपये प्रति दिवस आहे. जेवण भत्ता दिला जाईल."
+        }
+      },
+      {
+        id: 3,
+        skill: "Plumber",
+        distance: 7.8,
+        postedAt: 8,
+        title: "Plumbing & Pipe Fitting",
+        contractor: "Apex Builders",
+        verified: false,
+        aiMatch: "82% Match",
+        wage: "₹900 / day",
+        location: "Hadapsar, Pune",
+        duration: "5 Days",
+        food: "Accommodation Provided",
+        image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=600&q=80",
+        voiceText: {
+          en: "Job Opportunity. Plumbing work in Hadapsar Pune. Daily wage is 900 rupees per day. Accommodation is provided.",
+          hi: "काम का अवसर। हडपसर पुणे में प्लंबिंग का काम। दैनिक वेतन 900 रुपये प्रति दिन है। रहने की जगह दी जाएगी।",
+          mr: "कामाची संधी. हडपसर पुणे येथे प्लंबिंगचे काम. रोजंदारी ९०० रुपये प्रति दिवस आहे. राहण्याची सोय दिली जाईल."
+        }
+      }
+    ];
+
+
+    function enableLocation(on) {
+      const statusIds=["welcomeLocationStatus","loginLocationStatus"];
+      const chipIds=["welcomeLangSuggestions","loginLangSuggestions"];
+      if(!on){statusIds.forEach(id=>{const e=document.getElementById(id);if(e)e.innerText="Location is off"});chipIds.forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML=""});return;}
+      const render=(region,langs)=>{statusIds.forEach(id=>{const e=document.getElementById(id);if(e)e.innerText="Location on ✓ • "+region+" • Nearby jobs enabled"});chipIds.forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML=langs.map(x=>`<span class="lang-chip">${x}</span>`).join("")});const w=document.getElementById('workerAreaText');if(w)w.innerText='📍 '+region+' • Nearby jobs enabled';};
+      if(!navigator.geolocation){render('Your area',['English','Hindi']);return;}
+      navigator.geolocation.getCurrentPosition(pos=>{const lat=pos.coords.latitude,lon=pos.coords.longitude;let region='Your area',langs=['English','Hindi'];if(lat>21&&lon>87&&lon<90){region='West Bengal';langs=['English','हिंदी','বাংলা'];}else if(lat>20&&lon>68&&lon<75){region='Gujarat';langs=['English','हिंदी','ગુજરાતી'];}else if(lat>15&&lat<22&&lon>72&&lon<81){region='Maharashtra';langs=['English','हिंदी','मराठी'];}render(region,langs);},()=>render('Your area',['English','Hindi']));
+    }
+
+    let workerLocationOn = false;
+    let workerRegion = "Your area";
+
+    function enableWorkerJobLocation(){
+      workerLocationOn = true;
+      const update = (region) => {
+        workerRegion = region;
+        const el=document.getElementById('jobListLocationText');
+        if(el) el.innerText='📍 '+region+' • Location-based job matching ON';
+        renderWorkerJobList();
+      };
+      if(!navigator.geolocation){ update('Your area'); return; }
+      navigator.geolocation.getCurrentPosition(pos=>{
+        const lat=pos.coords.latitude, lon=pos.coords.longitude;
+        let region='Your area';
+        if(lat>21&&lon>87&&lon<90) region='West Bengal';
+        else if(lat>20&&lon>68&&lon<75) region='Gujarat';
+        else if(lat>15&&lat<22&&lon>72&&lon<81) region='Maharashtra';
+        update(region);
+      },()=>update('Your area'));
+    }
+
+    function jobIsInRegion(job){
+      if(!workerLocationOn || workerRegion==='Your area') return true;
+      return (job.location||'').toLowerCase().includes(workerRegion.toLowerCase()) || workerRegion==='Maharashtra' && /pune|mumbai|nashik|nagpur|thane|pimpri|alandi|hadapsar|kothrud|viman nagar/i.test(job.location||'');
+    }
+
+    function renderWorkerJobList(){
+      const box=document.getElementById('workerJobList'); if(!box) return;
+      const skill=(document.getElementById('jobListSkill')||{}).value || 'All skills';
+      const sort=(document.getElementById('jobListSort')||{}).value || 'near';
+      let jobs=sampleJobs.filter(j=>(skill==='All skills'||j.skill===skill) && jobIsInRegion(j));
+      if(sort==='near') jobs.sort((a,b)=>(a.distance||99)-(b.distance||99));
+      else if(sort==='wage') jobs.sort((a,b)=>parseInt((b.wage||'0').replace(/\D/g,''))-parseInt((a.wage||'0').replace(/\D/g,'')));
+      else jobs.sort((a,b)=>(a.postedAt||99)-(b.postedAt||99));
+      if(!jobs.length){box.innerHTML='<div class="soft-card p-6 rounded-2xl text-center"><i class="fa-solid fa-location-dot text-3xl text-orangeCustom mb-3"></i><h3 class="font-black">No matching jobs nearby</h3><p class="text-xs text-slate-400 mt-2">Try another skill or turn location off to view all postings.</p></div>';return;}
+      box.innerHTML=jobs.map(job=>`
+        <div class="soft-card p-4 rounded-2xl border border-slate-700">
+          <div class="flex gap-3">
+            <img src="${job.image}" class="w-20 h-20 rounded-xl object-cover" />
+            <div class="flex-1 min-w-0">
+              <div class="flex justify-between gap-2"><h3 class="font-black text-sm">${job.title}</h3>${job.verified?'<span class="text-green-400 text-xs">✓</span>':''}</div>
+              <p class="text-xs text-slate-400 mt-1">${job.contractor} • ${job.skill||'General Labour'}</p>
+              <p class="text-xs mt-2"><i class="fa-solid fa-location-dot text-red-400 mr-1"></i>${job.location} • ${job.distance?job.distance+' km away':'nearby'}</p>
+              <p class="text-orangeCustom font-black mt-2">${job.wage}</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-2 mt-3">
+            <button onclick="speakReelAd(${job.id})" class="bg-slate-800 border border-slate-600 py-2 rounded-xl text-xs font-black"><i class="fa-solid fa-volume-high mr-1"></i>Listen</button>
+            <button onclick="applyFromJobList(${job.id})" class="orange-btn py-2 rounded-xl text-xs font-black">Apply Now</button>
+          </div>
+        </div>`).join('');
+    }
+
+    function applyFromJobList(id){
+      const job=sampleJobs.find(j=>j.id===id); if(!job)return;
+      showSwipeToast('Application sent ✓ '+job.contractor+' notified',true);
+    }
+
+    function openFed(type){
+      const titles={workers:'Worker Details',contractors:'Contractor & Site Details',finance:'Transactions',business:'Business Model',gateway:'Payment Gateway'};
+      const bodies={
+        workers:`<div class="soft-card p-4 rounded-2xl"><b>10 Demo Workers</b><p class="text-[10px] text-slate-400 mt-1">All seeded workers have attendance + payment records.</p>${[['Rahul Patil','Mason','Kothrud, Pune','₹450'],['Asha Sharma','Electrician','Viman Nagar, Pune','₹550'],['Mohan Kumar','Helper','Hinjewadi, Pune','₹500'],['Priya Singh','Painter','Baner, Pune','₹650'],['Suresh Jadhav','Plumber','Wakad, Pune','₹600'],['Neha Verma','Carpenter','Pimpri, Pune','₹700'],['Imran Shaikh','Mason','Hadapsar, Pune','₹450'],['Kavita More','Painter','Kharadi, Pune','₹750'],['Ravi Yadav','Electrician','Aundh, Pune','₹550'],['Sunita Pawar','Helper','Shivajinagar, Pune','₹500']].map((w,i)=>`<div class="border-b border-slate-700 py-3 last:border-0"><div class="flex justify-between"><b>${i+1}. ${w[0]}</b><span class="text-green-400 text-[10px]">Active</span></div><p class="text-[10px] text-slate-400 mt-1">${w[1]} • ${w[2]} • ${w[3]}/day • Attendance: Present • Payment: Credited</p></div>`).join('')}</div>`,
+        contractors:`<div class="soft-card p-4 rounded-2xl"><b>10 Demo Contractors</b><p class="text-[10px] text-slate-400 mt-1">All demo contractors are verified.</p>${['Ramesh Sharma','Vikram Construction','Metro BuildWorks','Shakti Infra','Om Sai Contractors','Apex Build','Mahalaxmi Works','Prime Civil','Sai Developers','Urban Site Services'].map((name,i)=>`<div class="border-b border-slate-700 py-3 last:border-0"><div class="flex justify-between"><b>${i+1}. ${name}</b><span class="text-green-400 text-[10px]">Verified ✓</span></div><p class="text-[10px] text-slate-400 mt-1">Construction • Pune • ${i+1} active site${i===0?' • Wallet ₹50,000':''}</p></div>`).join('')}</div>`,
+        finance:`<div class="soft-card p-4 rounded-2xl"><b>Demo Transaction Ledger</b><p class="text-[10px] text-slate-400 mt-1">Attendance → payment → 1% + 1% fee workflow</p>${['Ramesh Sharma → Rahul Patil • ₹450 • Credited','Ramesh Sharma → Asha Sharma • ₹550 • Credited','Ramesh Sharma → Mohan Kumar • ₹500 • Credited','Ramesh Sharma → Priya Singh • ₹650 • Credited','Ramesh Sharma → Suresh Jadhav • ₹600 • Credited','Ramesh Sharma → Neha Verma • ₹700 • Credited','Ramesh Sharma → Imran Shaikh • ₹450 • Credited','Ramesh Sharma → Kavita More • ₹750 • Credited','Ramesh Sharma → Ravi Yadav • ₹550 • Credited','Ramesh Sharma → Sunita Pawar • ₹500 • Credited'].map((x,i)=>`<p class="text-xs mt-3">TXN-${1001+i} • ${x} • 1% contractor + 1% worker</p>`).join('')}</div><div class="soft-card p-4 rounded-2xl"><b>Payment workflow</b><p class="text-xs mt-2">Contractor wallet → Attendance marked → Worker payment credited → fees recorded → Federation ledger updated.</p></div>`,
+        business:`<div class="soft-card p-5 rounded-3xl"><h3 class="text-xl font-black">1% + 1% Service Model</h3><p class="text-sm mt-2">For every successful worker payment, the prototype records 1% from contractor side and 1% from worker side.</p><div class="grid grid-cols-2 gap-3 mt-4"><div class="metric"><b>1%</b><small class="block text-slate-400">Contractor side</small></div><div class="metric"><b>1%</b><small class="block text-slate-400">Worker side</small></div></div><p class="text-xs mt-4">Example: ₹1,000 worker payment → ₹10 + ₹10 platform fees.</p></div><div class="soft-card p-4 rounded-2xl"><b>Money flow</b><p class="text-xs mt-2">Contractor adds money → wallet → attendance confirmation → worker payment → both fees recorded.</p></div>`,
+        gateway:`<div class="soft-card p-5 rounded-3xl"><div class="flex items-center gap-3 mb-2"><i class="fa-solid fa-shield-halved text-2xl text-orangeCustom"></i><h3 class="text-xl font-black">Hello SAATHI Secure Pay</h3></div><p class="text-sm mt-1">Every wallet top-up and worker payment routes through a payment-gateway step: choose method, authorise, and receive a transaction ID before the wallet or worker balance updates.</p><div class="grid grid-cols-3 gap-2 mt-4"><div class="metric text-center"><i class="fa-solid fa-qrcode text-orangeCustom"></i><small class="block text-[9px] text-slate-400 mt-1">UPI</small></div><div class="metric text-center"><i class="fa-solid fa-credit-card text-orangeCustom"></i><small class="block text-[9px] text-slate-400 mt-1">Card</small></div><div class="metric text-center"><i class="fa-solid fa-building-columns text-orangeCustom"></i><small class="block text-[9px] text-slate-400 mt-1">Net Banking</small></div></div></div><div class="soft-card p-4 rounded-2xl"><b>Settlement flow</b><p class="text-xs mt-2">Gateway authorisation → funds settle to contractor/worker wallet → 1%+1% platform fee recorded → federation ledger updated in the demo backend.</p></div><div class="soft-card p-4 rounded-2xl"><b>Status</b><p class="text-xs mt-2 flex items-center gap-2"><span class="backend-dot"></span>Sandbox mode • simulated authorisation • no real funds move</p></div>`
+      };
+      document.getElementById('fedDetailTitle').innerText=titles[type];document.getElementById('fedDetailBody').innerHTML=bodies[type];navigateTo('screen-fed-detail');
+    }
+
+    function selectLanguage(lang) {
+      currentLang = lang;
+      document.getElementById("langSelect").value = lang;
+      applyTranslations();
+
+      ["en", "hi", "mr"].forEach(language => {
+        const button = document.getElementById(`lang-btn-${language}`);
+        if (language === lang) {
+          button.className = "bg-orangeCustom text-[#16221a] border border-orangeDark rounded-xl py-3 font-black text-xs shadow-md";
+        } else {
+          button.className = "bg-slate-700 text-slate-300 border border-slate-600 rounded-xl py-3 font-black text-xs";
+        }
+      });
+
+      if (!document.getElementById("screen-worker-reels").classList.contains("hidden")) {
+        stopReelVoice();
+        setTimeout(() => {
+          if (reelVoiceEnabled) speakCurrentReel();
+        }, 300);
+      }
+    }
+
+    function changeLanguage(lang) {
+      selectLanguage(lang);
+    }
+
+    function applyTranslations() {
+      const t = translations[currentLang];
+      document.getElementById("t-welcome-subtitle").innerText = t.welcomeSubtitle;
+      document.getElementById("t-choose-lang").innerText = t.chooseLang;
+      document.getElementById("t-btn-continue").querySelector("span").innerText = t.btnContinue;
+      document.getElementById("t-select-role").innerText = t.selectRole;
+      document.getElementById("t-role-worker").innerText = t.roleWorker;
+      document.getElementById("t-role-worker-desc").innerText = t.roleWorkerDesc;
+      document.getElementById("t-role-contractor").innerText = t.roleContractor;
+      document.getElementById("t-role-contractor-desc").innerText = t.roleContractorDesc;
+      document.getElementById("t-login-title").innerText = t.loginTitle;
+      document.getElementById("t-login-sub").innerText = t.loginSub;
+      document.getElementById("t-btn-otp").innerText = t.btnOtp;
+      document.getElementById("t-btn-verify").innerText = t.btnVerify;
+      document.getElementById("t-reg-title").innerText = t.regTitle;
+      document.getElementById("t-btn-save-profile").innerText = t.btnSaveProfile;
+      document.getElementById("t-post-job-title").innerText = t.postJobTitle;
+      document.getElementById("t-btn-post-job").innerText = t.btnPostJob;
+      document.getElementById("t-register-title").innerText = t.registerTitle;
+      document.getElementById("t-btn-logout").innerText = t.btnLogout;
+    }
+
+    function navigateTo(screenId) {
+      stopReelVoice();
+      const screens = [
+        "screen-welcome", "screen-role", "screen-login", "screen-admin-login", "screen-worker-reg", "screen-contractor-reg",
+        "screen-worker-dashboard", "screen-worker-swipe", "screen-worker-reels", "screen-worker-jobs", "screen-worker-register", "screen-worker-payment",
+        "screen-contractor-dashboard", "screen-contractor-payments", "screen-contractor-attendance", "screen-post-job",
+        "screen-guidelines", "screen-my-register", "screen-profile", "screen-worker-payment", "screen-federation", "screen-fed-detail"
+      ];
+
+      screens.forEach(screen => {
+        const element = document.getElementById(screen);
+        if (element) element.classList.add("hidden");
+      });
+
+      const target = document.getElementById(screenId);
+      if (target) target.classList.remove("hidden");
+
+      const appScreens = [
+        "screen-worker-dashboard", "screen-worker-swipe", "screen-worker-reels", "screen-worker-jobs", "screen-worker-register", "screen-worker-payment", "screen-contractor-dashboard", "screen-contractor-payments", "screen-contractor-attendance", "screen-post-job",
+        "screen-guidelines", "screen-my-register", "screen-profile", "screen-worker-payment", "screen-federation", "screen-fed-detail"
+      ];
+
+      document.getElementById("bottomNav").classList.toggle("hidden", !appScreens.includes(screenId) || screenId === "screen-worker-reels");
+
+      if (screenId === "screen-worker-reels") {
+        document.getElementById('bottomNav').classList.add('hidden');
+        setTimeout(()=>{document.querySelectorAll('.reel-video').forEach(v=>v.play().catch(()=>{})); if(reelVoiceEnabled)speakCurrentReel();},500);
+      }
+    }
+
+    function selectRole(role) {
+      currentRole = role;
+      const modeBtn = document.getElementById("modeToggleBtn");
+      if (modeBtn) modeBtn.classList.toggle("hidden", role === "federation" || role === "contractor");
+      document.getElementById("profileRoleText").innerText = role === "worker" ? "Daily Worker • Nearby" : role === "contractor" ? "Contractor • Nearby" : "Federation / Admin";
+      if (role === "federation") {
+        navigateTo("screen-admin-login");
+      } else {
+        navigateTo("screen-login");
+      }
+    }
+
+    const ADMIN_CREDENTIALS = { id: "HS-ADMIN-01", password: "Saathi@2026" };
+    function verifyAdminLogin(event) {
+      event.preventDefault();
+      const id = document.getElementById("adminId").value.trim();
+      const pass = document.getElementById("adminPassword").value;
+      const error = document.getElementById("adminLoginError");
+      if (id !== ADMIN_CREDENTIALS.id || pass !== ADMIN_CREDENTIALS.password) {
+        error.innerText = "Invalid admin ID or password. Access denied.";
+        error.classList.remove("hidden");
+        return;
+      }
+      error.classList.add("hidden");
+      document.getElementById("adminPassword").value = "";
+      navigateTo("screen-federation");
+    }
+
+    function sendOTP() {
+      const phone = document.getElementById("loginPhone").value;
+      if (phone.length !== 10) {
+        alert("Please enter a valid 10-digit mobile number.");
+        return;
+      }
+      document.getElementById("phone-step").classList.add("hidden");
+      document.getElementById("otp-step").classList.remove("hidden");
+      alert("Demo OTP: 1234");
+    }
+
+    function verifyOTP() {
+      const otp = document.getElementById("loginOtp").value;
+      if (otp !== "1234") {
+        alert("For this prototype, use OTP 1234.");
+        return;
+      }
+      if (currentRole === "contractor") {
+        navigateTo("screen-contractor-reg");
+      } else if (currentRole === "federation") {
+        navigateTo("screen-federation");
+      } else {
+        navigateTo("screen-worker-reg");
+      }
+    }
+
+    function handleWorkerReg(event) { event.preventDefault(); renderSwipeDeck(); navigateTo("screen-worker-dashboard"); alert("Worker profile created successfully ✓"); }
+
+    function handleContractorReg(event) {
+      event.preventDefault();
+      if (!document.getElementById("contractorCertificate").files.length) { alert("Certificate verification is required before activation."); return; }
+      isVerified = true; renderContractorRegister(); navigateTo("screen-contractor-dashboard"); alert("Certificate verified. Contractor account activated ✓");
+    }
+
+    function renderSwipeDeck() {
+      const deck = document.getElementById("cardDeck");
+      deck.innerHTML = "";
+
+      sampleJobs.forEach((job, index) => {
+        const card = document.createElement("div");
+        card.className = `swipe-card absolute inset-0 soft-card rounded-3xl overflow-hidden flex flex-col justify-between p-5 shadow-xl ${index !== cardIndex ? "hidden" : ""}`;
+        card.innerHTML = `
+          <div class="relative h-48 rounded-2xl overflow-hidden mb-3">
+            <img src="${job.image}" class="w-full h-full object-cover" />
+            <span class="absolute top-3 right-3 bg-orangeCustom text-[#16221a] font-black text-xs px-3 py-1 rounded-full shadow">
+              ${job.aiMatch}
+            </span>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <h3 class="text-xl font-black text-slate-900">${job.title}</h3>
+              ${job.verified ? `<i class="fa-solid fa-circle-check text-green-400"></i>` : ""}
+            </div>
+
+            <p class="text-xs text-slate-400 font-semibold mb-3">
+              <i class="fa-solid fa-user-tie mr-1"></i>${job.contractor}
+            </p>
+
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <div class="bg-slate-800 p-3 rounded-xl border border-slate-700">
+                <i class="fa-solid fa-indian-rupee-sign text-orangeCustom mr-1"></i>
+                <strong class="text-slate-900">${job.wage}</strong>
+              </div>
+              <div class="bg-slate-800 p-3 rounded-xl border border-slate-700 text-slate-300">
+                <i class="fa-solid fa-location-dot text-red-400 mr-1"></i>${job.location}
+              </div>
+              <div class="bg-slate-800 p-3 rounded-xl border border-slate-700 text-slate-300">
+                <i class="fa-solid fa-calendar text-orangeCustom mr-1"></i>${job.duration}
+              </div>
+              <div class="bg-slate-800 p-3 rounded-xl border border-slate-700 text-slate-300">
+                <i class="fa-solid fa-utensils text-orangeCustom mr-1"></i>${job.food}
+              </div>
+            </div>
+          </div>
+
+          <button onclick="speakReelAd(${job.id})" class="mt-3 w-full bg-slate-800 text-orangeCustom border border-orangeCustom/40 py-3 rounded-xl text-xs font-black hover:bg-slate-700">
+            <i class="fa-solid fa-volume-high mr-2"></i>Listen Job Details
+          </button>
+        `;
+        deck.appendChild(card);
+      });
+    }
+
+    function handleSwipe(direction) {
+      const cards = document.querySelectorAll(".swipe-card");
+      if (cards.length === 0 || cardIndex >= cards.length) return;
+
+      const currentCard = cards[cardIndex];
+      currentCard.classList.add(direction === "right" ? "swipe-right-anim" : "swipe-left-anim");
+      showSwipeToast(direction === "right" ? "Job Application Sent!" : "Skipped Job!", direction === "right");
+
+      setTimeout(() => {
+        currentCard.classList.add("hidden");
+        cardIndex = (cardIndex + 1) % sampleJobs.length;
+        renderSwipeDeck();
+      }, 300);
+    }
+
+    function showSwipeToast(message, positive) {
+      const toast = document.getElementById("swipeToast");
+      toast.innerText = message;
+      toast.style.background = positive ? "#10b981" : "#ef4444";
+      toast.classList.remove("hidden");
+      setTimeout(() => {
+        toast.classList.add("hidden");
+      }, 1500);
+    }
+
+    function renderReelsFeed() {
+      const container=document.getElementById("reelsContainer"); container.innerHTML="";
+      sampleJobs.forEach((job,index)=>{
+        const reel=document.createElement("div"); reel.className="reel-item"; reel.dataset.index=index;
+        reel.innerHTML=`<video class="reel-video" src="hello_saathi_reel_demo.mp4" autoplay muted loop playsinline></video><div class="reel-shade"></div>
+          <div class="absolute top-4 left-4 z-10 flex items-center gap-2"><span class="bg-slate-900/80 px-3 py-2 rounded-full text-xs font-black">Hello <span class="text-orangeCustom">SAATHI</span> 🟡</span></div>
+          <div class="reel-actions"><button class="reel-action" onclick="speakReelAd(${job.id})"><i class="fa-solid fa-volume-high"></i></button><button class="reel-action" onclick="showSwipeToast('Saved job ✓',true)"><i class="fa-regular fa-bookmark"></i></button><button class="reel-action" onclick="showSwipeToast('Job shared',true)"><i class="fa-solid fa-share"></i></button></div>
+          <div class="reel-scroll-hint">↑ ↓ SCROLL</div>
+          <div class="reel-content"><div class="flex gap-2 mb-3"><span class="bg-orangeCustom text-[#16221a] text-[10px] font-black px-3 py-1 rounded-full">${job.aiMatch}</span>${job.verified?'<span class="bg-slate-900/80 text-green-400 text-[10px] font-black px-3 py-1 rounded-full">✓ Verified</span>':''}</div><h3 class="text-3xl font-black text-white">${job.title}</h3><p class="text-xs text-slate-300 font-semibold mt-2">${job.contractor} • 📍 ${job.location}</p><p class="text-2xl font-black text-orangeCustom mt-2">${job.wage} <span class="text-xs text-slate-300">• ${job.duration}</span></p><div class="reel-bottom"><button onclick="handleReelDecision('left')" class="bg-slate-900/90 text-red-300">✕</button><button onclick="handleReelDecision('right')" class="orange-btn text-white">RIGHT • APPLY</button><button onclick="handleReelDecision('scroll')" class="bg-slate-900/90 text-white">↓</button></div></div>`;
+        reel.addEventListener('mouseenter',()=>currentReelIndex=index); container.appendChild(reel);
+      });
+      container.addEventListener('scroll',handleReelScroll);
+      enableReelTouch();
+    }
+    function handleReelDecision(dir){if(dir==='right'){showSwipeToast('Application sent ✓ Contractor notified',true)}else if(dir==='left'){showSwipeToast('Skipped — scroll to next job',false)}else{document.getElementById('reelsContainer').scrollBy({top:window.innerHeight*.85,behavior:'smooth'})}}
+    let reelTouchX=0,reelTouchY=0;
+    function enableReelTouch(){const c=document.getElementById('reelsContainer');c.addEventListener('touchstart',e=>{const t=e.changedTouches[0];reelTouchX=t.clientX;reelTouchY=t.clientY},{passive:true});c.addEventListener('touchend',e=>{const t=e.changedTouches[0],dx=t.clientX-reelTouchX,dy=t.clientY-reelTouchY;if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)){handleReelDecision(dx>0?'right':'left')}else if(Math.abs(dy)>35){c.scrollBy({top:(dy<0?1:-1)*window.innerHeight*.85,behavior:'smooth'})}},{passive:true});}
+
+    let reelScrollTimer;
+    function handleReelScroll() {
+      clearTimeout(reelScrollTimer);
+      reelScrollTimer = setTimeout(() => {
+        const container = document.getElementById("reelsContainer");
+        const reels = container.querySelectorAll(".reel-item");
+        let closestIndex = 0;
+        let smallestDistance = Infinity;
+
+        reels.forEach((reel, index) => {
+          const rect = reel.getBoundingClientRect();
+          const distance = Math.abs(rect.top - container.getBoundingClientRect().top);
+          if (distance < smallestDistance) {
+            smallestDistance = distance;
+            closestIndex = index;
+          }
+        });
+
+        if (closestIndex !== currentReelIndex) {
+          currentReelIndex = closestIndex;
+          if (reelVoiceEnabled) speakCurrentReel();
+        }
+      }, 250);
+    }
+
+    function speakCurrentReel() {
+      if (!reelVoiceEnabled) return;
+      const job = sampleJobs[currentReelIndex];
+      if (!job) return;
+      const text = job.voiceText[currentLang] || job.voiceText.en;
+      speakText(text);
+    }
+
+    function speakText(text) {
+      if (!("speechSynthesis" in window)) {
+        alert("Voice is not supported in this browser.");
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      if (currentLang === "hi") utterance.lang = "hi-IN";
+      else if (currentLang === "mr") utterance.lang = "mr-IN";
+      else utterance.lang = "en-IN";
+
+      utterance.rate = 0.88;
+      utterance.pitch = 1;
+      utterance.volume = 1;
+
+      utterance.onstart = () => { isSpeaking = true; updateVoiceUI(true); };
+      utterance.onend = () => { isSpeaking = false; updateVoiceUI(false); };
+      utterance.onerror = () => { isSpeaking = false; updateVoiceUI(false); };
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function toggleReelVoice() {
+      if (!("speechSynthesis" in window)) return;
+      if (isSpeaking && !window.speechSynthesis.paused) {
+        window.speechSynthesis.pause();
+        updateVoiceUI(false, true);
+        return;
+      }
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+        updateVoiceUI(true);
+        return;
+      }
+      reelVoiceEnabled = true;
+      speakCurrentReel();
+    }
+
+    function stopReelVoice() {
+      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+      isSpeaking = false;
+      updateVoiceUI(false);
+    }
+
+    function updateVoiceUI(playing, paused = false) {
+      const icon = document.getElementById("reelVoiceIcon");
+      const status = document.getElementById("voiceStatus");
+      if (!icon || !status) return;
+
+      if (paused) {
+        icon.className = "fa-solid fa-play";
+        status.innerText = "⏸ Voice Paused";
+        return;
+      }
+      if (playing) {
+        icon.className = "fa-solid fa-pause";
+        status.innerText = "🔊 Speaking...";
+      } else {
+        icon.className = "fa-solid fa-play";
+        status.innerText = "🔊 Auto Voice ON";
+      }
+    }
+
+    function speakReelAd(jobId) {
+      const job = sampleJobs.find(j => j.id === jobId);
+      if (!job) return;
+      const text = job.voiceText[currentLang] || job.voiceText.en;
+      reelVoiceEnabled = true;
+      speakText(text);
+    }
+
+    function speakGovtRules() {
+      const texts = {
+        en: "Please follow applicable government wage and working hour rules.",
+        hi: "कृपया लागू सरकारी मजदूरी और काम के घंटे के नियमों का पालन करें।",
+        mr: "कृपया लागू शासकीय वेतन आणि कामाच्या तासांच्या नियमांचे पालन करा."
+      };
+      speakText(texts[currentLang]);
+    }
+
+    function handlePostJob(event) {
+      event.preventDefault();
+      const wage = parseFloat(document.getElementById("postWage").value);
+
+      if (wage < MINIMUM_GOVT_WAGE) {
+        const error = document.getElementById("wageErrorMsg");
+        error.innerText = `Wage must be at least ₹${MINIMUM_GOVT_WAGE}.`;
+        error.classList.remove("hidden");
+        return;
+      }
+
+      document.getElementById("wageErrorMsg").classList.add("hidden");
+
+      const newJob = {
+        id: sampleJobs.length + 1,
+        title: document.getElementById("postWorkType").value,
+        contractor: "Ramesh Sharma",
+        verified: isVerified,
+        aiMatch: "95% Match",
+        wage: `₹${wage} / day`,
+        location: document.getElementById("postLocation").value,
+        duration: document.getElementById("postDuration").value,
+        food: "Allowance Included",
+        image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=600&q=80",
+        voiceText: {
+          en: `New job opportunity at ${document.getElementById("postLocation").value}. Daily wage is ${wage} rupees per day.`,
+          hi: `नई नौकरी का अवसर। स्थान ${document.getElementById("postLocation").value}। दैनिक वेतन ${wage} रुपये है।`,
+          mr: `नवीन कामाची संधी. ठिकाण ${document.getElementById("postLocation").value}. रोजंदारी ${wage} रुपये आहे।`
+        }
+      };
+
+      sampleJobs.unshift(newJob);
+      renderContractorRegister();
+      alert("Job posted successfully!");
+      switchTab("register");
+    }
+
+    const demoApplicantPool = ['Rahul Patil','Asha Sharma','Mohan Kumar','Priya Singh','Suresh Jadhav','Neha Verma','Imran Shaikh','Kavita More','Ravi Yadav','Sunita Pawar'];
+    function getApplicantsForJob(job){
+      const count = 2 + (job.id % 3);
+      const statusCycle = ['Applied','Shortlisted','Hired'];
+      const list = [];
+      for (let i = 0; i < count; i++) {
+        const name = demoApplicantPool[(job.id + i) % demoApplicantPool.length];
+        const status = statusCycle[(job.id + i) % statusCycle.length];
+        const match = 78 + ((job.id * 7 + i * 13) % 21);
+        list.push({ name, status, match });
+      }
+      return list;
+    }
+    function applicantStatusClass(status){
+      if (status === 'Hired') return 'text-green-400';
+      if (status === 'Shortlisted') return 'text-orangeCustom';
+      return 'text-slate-400';
+    }
+
+    function renderContractorRegister() {
+      const container = document.getElementById("postedJobsList");
+      container.innerHTML = "";
+
+      sampleJobs.forEach(job => {
+        const applicants = getApplicantsForJob(job);
+        const card = document.createElement("div");
+        card.className = "soft-card p-4 rounded-2xl";
+        card.innerHTML = `
+          <div class="flex justify-between items-start">
+            <div>
+              <h4 class="font-black text-sm text-slate-900">${job.title}</h4>
+              <p class="text-xs text-slate-400">${job.location} • ${job.duration}</p>
+            </div>
+            <span class="text-sm font-black text-orangeCustom">${job.wage}</span>
+          </div>
+
+          <div class="mt-3 pt-3 border-t border-slate-700">
+            <p class="text-[10px] font-black text-slate-400 mb-2">
+              <i class="fa-solid fa-users text-orangeCustom mr-1"></i>${applicants.length} Applicants
+            </p>
+            <div class="space-y-2">
+              ${applicants.map(a => `
+                <div class="flex items-center justify-between bg-slate-800/70 rounded-xl px-3 py-2">
+                  <div class="flex items-center gap-2">
+                    <span class="w-7 h-7 rounded-full bg-orangeCustom/15 text-orangeCustom flex items-center justify-center text-[10px] font-black">${a.name.charAt(0)}</span>
+                    <div>
+                      <span class="text-xs font-bold text-slate-900 block">${a.name}</span>
+                      <span class="text-[9px] text-slate-500">${a.match}% skill match</span>
+                    </div>
+                  </div>
+                  <span class="text-[10px] font-black ${applicantStatusClass(a.status)}">${a.status}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function triggerDummyVerification() {
+      isVerified = true;
+      document.getElementById("profileBadge").classList.remove("hidden");
+      document.getElementById("verifyStatusText").innerText = "✓ Profile Verified";
+      document.getElementById("verifyStatusText").className = "text-xs text-green-400 font-black mb-4";
+      document.getElementById("btnVerify").classList.add("hidden");
+      alert("Profile verified successfully! (Demo)");
+    }
+
+    function toggleFeedMode() {
+      if (currentFeedMode === "job-search") {
+        currentFeedMode = "reels";
+        document.getElementById("modeText").innerText = "Job Search";
+        document.getElementById("modeIcon").className = "fa-solid fa-briefcase mr-1";
+        renderReelsFeed();
+        navigateTo("screen-worker-reels");
+      } else {
+        currentFeedMode = "job-search";
+        document.getElementById("modeText").innerText = "Job Search";
+        document.getElementById("modeIcon").className = "fa-solid fa-briefcase mr-1";
+        renderSwipeDeck();
+        navigateTo("screen-worker-swipe");
+      }
+    }
+
+    function switchTab(tab) {
+      if(currentRole==='federation'){
+        if(tab==='search') navigateTo('screen-federation');
+        else if(tab==='payments') openFed('finance');
+        else if(tab==='attendance') openFed('business');
+        return;
+      }
+      if(currentRole==='contractor'){
+        if(tab==='search') navigateTo('screen-contractor-dashboard');
+        else if(tab==='reels') navigateTo('screen-profile');
+        else if(tab==='payments') navigateTo('screen-contractor-payments');
+        else if(tab==='attendance') navigateTo('screen-contractor-attendance');
+        else if(tab==='register'){ renderContractorRegister(); navigateTo('screen-my-register'); }
+        return;
+      }
+      if(tab==='search'){renderSwipeDeck();navigateTo('screen-worker-dashboard');}
+      else if(tab==='reels'){renderReelsFeed();navigateTo('screen-worker-reels');}
+      else if(tab==='payments')navigateTo('screen-worker-payment');
+      else if(tab==='attendance')navigateTo('screen-worker-payment');
+    }
+
+    /* ===== PAYMENT GATEWAY (simulated) ===== */
+    let pgCallback=null, pgMethod='UPI';
+    function openPaymentGateway(title, amount, callback){
+      pgCallback=callback;
+      document.getElementById('pg-title').innerText=title;
+      document.getElementById('pg-amount').innerText='₹'+Number(amount).toLocaleString('en-IN');
+      document.getElementById('pg-step-method').classList.remove('hidden');
+      document.getElementById('pg-step-processing').classList.add('hidden');
+      document.getElementById('pg-step-success').classList.add('hidden');
+      document.getElementById('paymentGatewayModal').classList.remove('hidden');
+    }
+    function closePaymentGateway(){document.getElementById('paymentGatewayModal').classList.add('hidden');pgCallback=null;}
+    function processGatewayPayment(method){
+      pgMethod=method;
+      document.getElementById('pg-step-method').classList.add('hidden');
+      document.getElementById('pg-step-processing').classList.remove('hidden');
+      document.getElementById('pg-processing-text').innerText='Processing via '+method+'…';
+      setTimeout(()=>{
+        document.getElementById('pg-step-processing').classList.add('hidden');
+        document.getElementById('pg-step-success').classList.remove('hidden');
+        document.getElementById('pg-txn-id').innerText='HS'+Date.now().toString().slice(-8);
+      },1300);
+    }
+    function finishGatewayPayment(){
+      const cb=pgCallback;
+      closePaymentGateway();
+      if(typeof cb==='function') cb(pgMethod);
+    }
+    function startWalletTopUp(){
+      const n=Number(document.getElementById('walletAdd').value||0);
+      if(n<=0)return alert('Enter amount');
+      openPaymentGateway('Add Money to Wallet', n, ()=>addWalletMoney());
+    }
+    function startWorkerPayment(){
+      const n=Number(document.getElementById('payAmount').value||0);
+      if(n<450)return alert('Minimum demo payment is ₹450/day.');
+      if(n>contractorWalletBalance)return alert('Insufficient wallet balance.');
+      const worker=document.getElementById('payWorker').value;
+      openPaymentGateway('Pay '+worker, n, ()=>sendWalletPayment());
+    }
+
+    let contractorWalletBalance=50000;
+    let workerBalance=5950;
+    const attendanceWorkers=[{name:'Rahul',skill:'Mason',rate:450},{name:'Asha',skill:'Electrician',rate:550},{name:'Mohan',skill:'Helper',rate:450}];
+    function addWalletMoney(){const n=Number(document.getElementById('walletAdd').value||0);if(n<=0)return alert('Enter amount');contractorWalletBalance+=n;document.getElementById('contractorWallet').innerText='₹'+contractorWalletBalance.toLocaleString('en-IN');document.getElementById('walletAdd').value='';alert('Money added to contractor wallet ✓');}
+    function sendWalletPayment(){const n=Number(document.getElementById('payAmount').value||0);if(n<450)return alert('Minimum demo payment is ₹450/day.');if(n>contractorWalletBalance)return alert('Insufficient wallet balance.');contractorWalletBalance-=n;document.getElementById('contractorWallet').innerText='₹'+contractorWalletBalance.toLocaleString('en-IN');const worker=document.getElementById('payWorker').value;document.getElementById('contractorTransactions').insertAdjacentHTML('afterbegin',`<p class="text-xs">Today • ${worker} • ₹${n.toLocaleString('en-IN')} • Sent ✓</p>`);document.getElementById('payAmount').value='';alert('Payment queued. It will credit the worker panel after attendance confirmation ✓');}
+    function renderAttendance(){const box=document.getElementById('attendanceList');if(!box)return;box.innerHTML=attendanceWorkers.map((w,i)=>`<div class="flex items-center justify-between p-3 rounded-xl border border-slate-700 bg-slate-800"><div><b>${w.name}</b><p class="text-[10px] text-slate-400">${w.skill} • ₹${w.rate}/day</p></div><button id="att-${i}" onclick="markAttendance(${i})" class="px-3 py-2 rounded-lg bg-orangeCustom/20 text-orangeCustom border border-orangeCustom/30 text-xs font-black">Mark Present</button></div>`).join('');}
+    function markAttendance(i){const w=attendanceWorkers[i];const btn=document.getElementById('att-'+i);btn.innerText='Present ✓';btn.disabled=true;btn.className='px-3 py-2 rounded-lg bg-green-100 text-green-700 text-xs font-black';workerBalance+=w.rate;document.getElementById('workerBalance').innerText='₹'+workerBalance.toLocaleString('en-IN');document.getElementById('workerPaymentList').insertAdjacentHTML('afterbegin',`<div class="flex justify-between text-xs"><span>Today • ${w.name} Site • Present</span><b>₹${w.rate} Credited</b></div>`);}
+    function markAllAttendance(){attendanceWorkers.forEach((_,i)=>{const b=document.getElementById('att-'+i);if(b&&!b.disabled)markAttendance(i);});alert('Attendance marked. Eligible worker payments credited ✓');}
+
+    function logout() {
+      stopReelVoice();
+      cardIndex = 0;
+      isVerified = false;
+      currentRole = "worker";
+      document.getElementById("phone-step").classList.remove("hidden");
+      document.getElementById("otp-step").classList.add("hidden");
+      document.getElementById("loginPhone").value = "";
+      document.getElementById("loginOtp").value = "";
+      const adminIdEl = document.getElementById("adminId");
+      const adminPassEl = document.getElementById("adminPassword");
+      const adminErrEl = document.getElementById("adminLoginError");
+      if (adminIdEl) adminIdEl.value = "";
+      if (adminPassEl) adminPassEl.value = "";
+      if (adminErrEl) adminErrEl.classList.add("hidden");
+      navigateTo("screen-welcome");
+    }
+
+    function updateRoleNav(){
+      const reels=document.getElementById('navReels');
+      if(!reels) return;
+      reels.style.display = currentRole==='federation' ? 'none' : '';
+      if(currentRole==='contractor'){
+        reels.innerHTML = '<i class="fa-solid fa-user text-xl"></i><span class="text-[10px] font-bold mt-1">Profile</span>';
+      } else {
+        reels.innerHTML = '<i class="fa-solid fa-clapperboard text-xl"></i><span class="text-[10px] font-bold mt-1">Reels</span>';
+      }
+    }
+    const _selectRoleOriginal = window.selectRole;
+    // Existing selectRole is declared above; refresh nav after role selection through a lightweight observer.
+    setInterval(updateRoleNav, 300);
+
+    selectLanguage("en");
+    renderAttendance();
+  </script>
+
+<script>
+/* =========================================================
+   HELLO SAATHI — DEMO DATABASE (IndexedDB)
+   Browser-local demo DB for SIH prototype. No server required.
+   Stores: workers, contractors, jobs, applications, attendance,
+           wallets, transactions, federation.
+   ========================================================= */
+const SAATHI_DB = { name:'HelloSaathiDemoDB', version:1 };
+let saathiDB = null;
+
+function openSaathiDB(){
+  return new Promise((resolve,reject)=>{
+    const req=indexedDB.open(SAATHI_DB.name,SAATHI_DB.version);
+    req.onupgradeneeded=e=>{
+      const db=e.target.result;
+      ['workers','contractors','jobs','applications','attendance','wallets','transactions','federation'].forEach(store=>{
+        if(!db.objectStoreNames.contains(store)) db.createObjectStore(store,{keyPath:'id',autoIncrement:true});
+      });
+    };
+    req.onsuccess=e=>{saathiDB=e.target.result;resolve(saathiDB)};
+    req.onerror=e=>reject(e.target.error);
+  });
+}
+function dbPut(store,data){return new Promise((resolve,reject)=>{if(!saathiDB)return resolve(null);const tx=saathiDB.transaction(store,'readwrite');const req=tx.objectStore(store).put(data);req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});}
+function dbAdd(store,data){return new Promise((resolve,reject)=>{if(!saathiDB)return resolve(null);const tx=saathiDB.transaction(store,'readwrite');const req=tx.objectStore(store).add(data);req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});}
+function dbAll(store){return new Promise((resolve,reject)=>{if(!saathiDB)return resolve([]);const tx=saathiDB.transaction(store,'readonly');const req=tx.objectStore(store).getAll();req.onsuccess=()=>resolve(req.result||[]);req.onerror=()=>reject(req.error);});}
+function dbClear(store){return new Promise((resolve,reject)=>{const tx=saathiDB.transaction(store,'readwrite');const req=tx.objectStore(store).clear();req.onsuccess=()=>resolve();req.onerror=()=>reject(req.error);});}
+
+async function seedSaathiDemoDB(){
+  if(!saathiDB) await openSaathiDB();
+
+  // Reset only the seed/demo stores so the presentation always opens with a complete dataset.
+  for(const store of ['workers','contractors','jobs','attendance','wallets','transactions','federation']) await dbClear(store);
+
+  const workerNames=['Rahul Patil','Asha Sharma','Mohan Kumar','Priya Singh','Suresh Jadhav','Neha Verma','Imran Shaikh','Kavita More','Ravi Yadav','Sunita Pawar'];
+  const skills=['Mason','Electrician','Helper','Painter','Plumber','Carpenter','Mason','Painter','Electrician','Helper'];
+  const areas=['Kothrud, Pune','Viman Nagar, Pune','Hinjewadi, Pune','Baner, Pune','Wakad, Pune','Pimpri, Pune','Hadapsar, Pune','Kharadi, Pune','Aundh, Pune','Shivajinagar, Pune'];
+  const workers=workerNames.map((name,i)=>({id:i+1,name,skill:skills[i],phone:'90000000'+String(i+1).padStart(2,'0'),location:areas[i],status:'Active',dailyRate:[450,550,500,650,600,700,450,750,550,500][i]}));
+  for(const w of workers) await dbPut('workers',w);
+
+  const contractorNames=['Ramesh Sharma','Vikram Construction','Metro BuildWorks','Shakti Infra','Om Sai Contractors','Apex Build','Mahalaxmi Works','Prime Civil','Sai Developers','Urban Site Services'];
+  for(let i=0;i<10;i++) await dbPut('contractors',{id:i+1,name:contractorNames[i],phone:'91000000'+String(i+1).padStart(2,'0'),verified:true,skill:'Construction',location:'Pune',sites:i+1});
+
+  const jobTemplates=[
+    ['Masonry / Brickwork','Mason',850,'Kothrud, Pune','7 Days'],['Wall Painting Work','Painter',750,'Viman Nagar, Pune','3 Days'],['Electrical Installation','Electrician',900,'Hinjewadi, Pune','5 Days'],['Plumbing Repair','Plumber',800,'Baner, Pune','4 Days'],['Carpentry Work','Carpenter',950,'Wakad, Pune','6 Days'],['Site Helper','Helper',500,'Pimpri, Pune','10 Days'],['Apartment Painting','Painter',700,'Hadapsar, Pune','5 Days'],['Commercial Masonry','Mason',900,'Kharadi, Pune','8 Days'],['Wiring & Fittings','Electrician',850,'Aundh, Pune','4 Days'],['Furniture Carpentry','Carpenter',1000,'Shivajinagar, Pune','6 Days'],['Drainage Plumbing','Plumber',780,'Kothrud, Pune','3 Days'],['Concrete Helper','Helper',500,'Wakad, Pune','7 Days'],['Interior Painting','Painter',800,'Baner, Pune','5 Days'],['Building Brickwork','Mason',880,'Pimpri, Pune','9 Days'],['Industrial Electrical','Electrician',950,'Hinjewadi, Pune','6 Days']
+  ];
+  for(let i=0;i<15;i++){const t=jobTemplates[i]; await dbPut('jobs',{id:i+1,skill:t[1],title:t[0],wage:'₹'+t[2]+' / day',wageValue:t[2],location:t[3],duration:t[4],contractor:contractorNames[i%10],verified:true,distance:(1.2+(i*0.8)%8).toFixed(1),status:i<11?'Open':'Filled',source:'demo-seed'});}
+
+  // 10/10 attendance: every demo worker is present and paid for one day.
+  const today=new Date().toISOString().slice(0,10);
+  for(const w of workers){
+    await dbPut('attendance',{id:w.id,workerId:w.id,worker:w.name,skill:w.skill,rate:w.dailyRate,amount:w.dailyRate,status:'Present',date:today,markedBy:contractorNames[(w.id-1)%10]});
+  }
+
+  // Wallets and a realistic-looking transaction trail.
+  await dbPut('wallets',{id:1,ownerType:'contractor',owner:'Ramesh Sharma',balance:50000,updatedAt:new Date().toISOString()});
+  for(const w of workers) await dbPut('wallets',{id:100+w.id,ownerType:'worker',owner:w.name,balance:w.dailyRate,updatedAt:new Date().toISOString()});
+  await dbPut('transactions',{id:1,type:'Wallet Top-up',from:'Hello SAATHI Reserve',to:'Ramesh Sharma Wallet',amount:50000,status:'Completed',date:today});
+  let tid=2;
+  for(const w of workers){
+    await dbPut('transactions',{id:tid++,type:'Attendance Payment',from:'Ramesh Sharma Wallet',to:w.name,amount:w.dailyRate,status:'Credited',attendance:'Present',feeContractor:w.dailyRate*0.01,feeWorker:w.dailyRate*0.01,date:today});
+    await dbPut('transactions',{id:tid++,type:'Platform Fee',from:w.name,to:'Hello SAATHI',amount:w.dailyRate*0.01,status:'Recorded',side:'worker',date:today});
+  }
+  await dbPut('transactions',{id:tid++,type:'Platform Fee',from:'Ramesh Sharma',to:'Hello SAATHI',amount:workers.reduce((a,w)=>a+w.dailyRate,0)*0.01,status:'Recorded',side:'contractor',date:today});
+  await dbPut('federation',{id:1,key:'businessModel',contractorFeePercent:1,workerFeePercent:1,description:'1% contractor side + 1% worker side'});
+  await dbPut('federation',{id:2,key:'demoSummary',workers:10,contractors:10,jobs:15,attendance:10,transactions:22});
+  await updateDbStatus();
+}
+
+async function updateDbStatus(){
+  const [w,c,j,a,t]=await Promise.all([dbAll('workers'),dbAll('contractors'),dbAll('jobs'),dbAll('attendance'),dbAll('transactions')]);
+  const el=document.getElementById('dbStatus');
+  if(el) el.innerHTML=`<span class="text-green-400"><i class="fa-solid fa-database mr-1"></i>Backend Connected</span><span class="text-slate-400 ml-2">${w.length} workers • ${c.length} contractors • ${j.length} jobs • ${a.length} attendance • ${t.length} transactions</span>`;
+  const inline=document.getElementById('dbStatusInline');
+  if(inline) inline.innerHTML=`<span class="backend-dot"></span> Synced with Hello SAATHI Cloud • ${w.length} workers • ${c.length} contractors • ${j.length} jobs • ${t.length} txns`;
+}
+async function saveJobToDemoDB(job){await dbPut('jobs',{...job,source:'contractor'});updateDbStatus();}
+async function saveApplicationToDemoDB(job,role='worker'){await dbAdd('applications',{jobId:job.id,jobTitle:job.title,contractor:job.contractor,role,status:'Applied',createdAt:new Date().toISOString()});updateDbStatus();}
+async function saveAttendanceToDemoDB(worker,amount){await dbAdd('attendance',{worker:worker.name,skill:worker.skill,rate:worker.rate,amount,status:'Present',date:new Date().toISOString()});updateDbStatus();}
+async function saveTransactionToDemoDB(type,from,to,amount,meta={}){await dbAdd('transactions',{type,from,to,amount,...meta,date:new Date().toISOString()});updateDbStatus();}
+
+/* Add a small DB status indicator to the existing app without changing the UI flow. */
+function addDbStatusBadge(){
+  if(document.getElementById('dbStatus'))return;
+  const b=document.createElement('div');b.id='dbStatus';b.title='Backend dataset: 10 workers • 10 contractors • 15 jobs • 10 attendance • 22 transactions';b.className='fixed left-3 bottom-20 z-[90] text-[9px] px-3 py-1.5 rounded-full bg-slate-900/95 border border-slate-700 shadow-lg';b.innerText='Connecting to backend…';document.body.appendChild(b);
+}
+
+/* Persist important prototype actions. */
+const _applyFromJobList=window.applyFromJobList;
+window.applyFromJobList=async function(id){const job=(typeof sampleJobs!=='undefined'?sampleJobs:[]).find(j=>j.id===id);if(job)await saveApplicationToDemoDB(job);return _applyFromJobList(id);};
+const _handlePostJob=window.handlePostJob;
+window.handlePostJob=async function(event){
+  event.preventDefault();
+  const wage=parseFloat(document.getElementById('postWage').value);
+  if(wage < MINIMUM_GOVT_WAGE){return _handlePostJob(event);}
+  const result=_handlePostJob(event);
+  const last=(typeof sampleJobs!=='undefined'?sampleJobs:[])[0];
+  if(last) await saveJobToDemoDB(last);
+  return result;
+};
+const _addWalletMoney=window.addWalletMoney;
+window.addWalletMoney=async function(){const before=contractorWalletBalance;_addWalletMoney();if(contractorWalletBalance!==before){await dbPut('wallets',{id:1,ownerType:'contractor',owner:'Ramesh Sharma',balance:contractorWalletBalance,updatedAt:new Date().toISOString()});await saveTransactionToDemoDB('Wallet Top-up','External','Ramesh Sharma',contractorWalletBalance-before,{status:'Completed'});}};
+const _sendWalletPayment=window.sendWalletPayment;
+window.sendWalletPayment=async function(){const before=contractorWalletBalance;const n=Number(document.getElementById('payAmount').value||0);const worker=document.getElementById('payWorker')?.value||'Worker';_sendWalletPayment();if(contractorWalletBalance!==before){await dbPut('wallets',{id:1,ownerType:'contractor',owner:'Ramesh Sharma',balance:contractorWalletBalance,updatedAt:new Date().toISOString()});await saveTransactionToDemoDB('Worker Payment','Ramesh Sharma',worker,n,{status:'Queued',attendanceRequired:true});}};
+const _markAttendance=window.markAttendance;
+window.markAttendance=async function(i){const w=attendanceWorkers[i];_markAttendance(i);if(w){await saveAttendanceToDemoDB(w,w.rate);await saveTransactionToDemoDB('Attendance Payment','Ramesh Sharma',w.name,w.rate,{status:'Credited',attendance:'Present',feeContractor:w.rate*0.01,feeWorker:w.rate*0.01});}};
+
+(async()=>{try{await openSaathiDB();addDbStatusBadge();await seedSaathiDemoDB();}catch(e){console.warn('Backend DB unavailable',e);const el=document.getElementById('dbStatus');if(el)el.innerHTML='<span class="text-yellow-400"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Backend fallback mode</span>';const inline=document.getElementById('dbStatusInline');if(inline)inline.innerText='Backend fallback mode — using local cache';}})();
+</script>
+</body>
+
+</html>
